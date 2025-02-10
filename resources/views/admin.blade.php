@@ -160,11 +160,8 @@
                         <th>SEP</th>
                         <th>Nama Pasien</th>
                         <th>Dokter DPJP</th>
-                        <th>Dokter Operasi 1</th>
-                        <th>Dokter Operasi 2</th>
-                        <th>Dokter Operasi 3</th>
-                        <th>Dokter Anestesi</th>
                         <th>Operasi</th>
+                        <th>Petugas Operasi</th>
                         <th>Nama Dokter Kunjungan</th>
                         <th>Kamar</th>
                         <th>Lab</th>
@@ -185,11 +182,27 @@
                             <td>{{ $pasien['sep'] }}</td>
                             <td>{{ $pasien['nm_pasien'] }}</td>
                             <td>{{ $pasien['dokter_dpjp'] }}</td>
-                            <td>{{ $pasien['dokter1'] }}</td>
-                            <td>{{ $pasien['dokter2'] }}</td>
-                            <td>{{ $pasien['dokter3'] }}</td>
-                            <td>{{ $pasien['anestesi'] }}</td>
-                            <td>{{ $pasien['operasi'] }}</td>
+                            <td>{{ $pasien['operasiStatus'] }}</td>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <th>Tanggal Operasi</th>
+                                        <th>Dokter 1</th>
+                                        <th>Dokter 2</th>
+                                        <th>Dokter 3</th>
+                                        <th>Anestesi</th>
+                                    </tr>
+                                    @foreach ($pasien['operasi'] as $operasi)
+                                        <tr>
+                                            <td>{{ $operasi['Tanggal Operasi'] }}</td>
+                                            <td>{{ $operasi['Dokter 1'] }}</td>
+                                            <td>{{ $operasi['Dokter 2'] }}</td>
+                                            <td>{{ $operasi['Dokter 3'] }} </td>
+                                            <td>{{ $operasi['Anestesi'] }} </td>
+                                        </tr>
+                                    @endforeach
+                                </table>
+                            </td>
                             <td>
                                 <table>
                                     <tr>

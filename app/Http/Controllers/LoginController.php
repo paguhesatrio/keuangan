@@ -23,19 +23,19 @@ class LoginController extends Controller
 
         // Daftar pengguna yang valid
         $validUsers = [
-            ['nik' => 'igd', 'password' => 'igd.rspmk', 'kode_bangsal' => 'IGDK', 'role' => 'bangsal'],
-            ['nik' => 'isonegatif', 'password' => 'isonegatif.rspmk', 'kode_bangsal' => 'RITN', 'role' => 'bangsal'],
-            ['nik' => 'isopositif', 'password' => 'isopositif.rspmk', 'kode_bangsal' => 'RITNN', 'role' => 'bangsal'],
-            ['nik' => 'icu', 'password' => 'icu.rspmk', 'kode_bangsal' => 'ICU', 'role' => 'bangsal'],
-            ['nik' => 'nicu', 'password' => 'nicu.rspmk', 'kode_bangsal' => 'NICU', 'role' => 'bangsal'],
-            ['nik' => 'vip', 'password' => 'vip.rspmk', 'kode_bangsal' => 'VIP', 'role' => 'bangsal'],
-            ['nik' => 'nifas', 'password' => 'nifas.rspmk', 'kode_bangsal' => 'RB', 'role' => 'bangsal'],
-            ['nik' => 'pd1', 'password' => 'pd1.rspmk', 'kode_bangsal' => 'PD1', 'role' => 'bangsal'],
-            ['nik' => 'pd2', 'password' => 'pd2.rspmk', 'kode_bangsal' => 'PD2', 'role' => 'bangsal'],
-            ['nik' => 'perina', 'password' => 'perina.rspmk', 'kode_bangsal' => 'PERI', 'role' => 'bangsal'],
-            ['nik' => 'anak', 'password' => 'anak.rspmk', 'kode_bangsal' => 'ZA', 'role' => 'bangsal'],
-            ['nik' => 'bedah', 'password' => 'bedah.rspmk', 'kode_bangsal' => 'ZB', 'role' => 'bangsal'],
-            ['nik' => 'admin', 'password' => '12', 'kode_bangsal' => ' ', 'role' => 'admin'] // Admin tanpa kode bangsal
+            ['nik' => 'igd', 'password' => 'igd.rsudpmk', 'kode_bangsal' => 'IGDK', 'role' => 'bangsal'],
+            ['nik' => 'isonegatif', 'password' => 'isonegatif.rsudpmk', 'kode_bangsal' => 'RITN', 'role' => 'bangsal'],
+            ['nik' => 'isopositif', 'password' => 'isopositif.rsudpmk', 'kode_bangsal' => 'RITNN', 'role' => 'bangsal'],
+            ['nik' => 'icu', 'password' => 'icu.rsudpmk', 'kode_bangsal' => 'ICU', 'role' => 'bangsal'],
+            ['nik' => 'nicu', 'password' => 'nicu.rsudpmk', 'kode_bangsal' => 'NICU', 'role' => 'bangsal'],
+            ['nik' => 'vip', 'password' => 'vip.rsudpmk', 'kode_bangsal' => 'VIP', 'role' => 'bangsal'],
+            ['nik' => 'nifas', 'password' => 'nifas.rsudpmk', 'kode_bangsal' => 'RB', 'role' => 'bangsal'],
+            ['nik' => 'pd1', 'password' => 'pd1.rsudpmk', 'kode_bangsal' => 'PD1', 'role' => 'bangsal'],
+            ['nik' => 'pd2', 'password' => 'pd2.rsudpmk', 'kode_bangsal' => 'PD2', 'role' => 'bangsal'],
+            ['nik' => 'perina', 'password' => 'perina.rsudpmk', 'kode_bangsal' => 'PERI', 'role' => 'bangsal'],
+            ['nik' => 'anak', 'password' => 'anak.rsudpmk', 'kode_bangsal' => 'ZA', 'role' => 'bangsal'],
+            ['nik' => 'bedah', 'password' => 'bedah.rsudpmk', 'kode_bangsal' => 'ZB', 'role' => 'bangsal'],
+            ['nik' => 'admin', 'password' => '123456', 'kode_bangsal' => ' ', 'role' => 'admin'] // Admin tanpa kode bangsal
         ];
 
         foreach ($validUsers as $user) {

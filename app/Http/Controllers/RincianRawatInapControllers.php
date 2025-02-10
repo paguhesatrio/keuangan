@@ -405,16 +405,54 @@ class RincianRawatInapControllers extends Controller
                 $nama_dokter = $grouped_dokter->pluck('nama_dokter')->toArray(); // Hanya nama dokter
                 $jumlah_kunjungan = $grouped_dokter->pluck('jumlah_kode')->toArray(); // Hanya jumlah kode
 
-                $dokter_operator = [
-                    'dokter1' => $pasien->operasi->dokter1->nm_dokter ?? '-',
-                    'dokter2' => $pasien->operasi->dokter2->nm_dokter ?? '-',
-                    'dokter3' => $pasien->operasi->dokter3->nm_dokter ?? '-',
-                    'anestesi' => $pasien->operasi->anestesi->nm_dokter ?? '-',
-                ];
-
                 $dokter_dpjp = $pasien->dpjp->first()->dokter->nm_dokter ?? '-';
 
-                $operasiStatus = $pasien->operasi ? 'Ada' : 'Tidak Ada';
+
+                //Operasi
+                $operasiGroup = $pasien->operasi && !$pasien->operasi->isEmpty()
+                    ? $pasien->operasi
+                    ->groupBy(function ($operasi) {
+                        return $operasi->tgl_operasi; // Kelompokkan berdasarkan tgl_operasi
+                    })
+                    ->map(function ($group, $tgl_operasi) {
+                        $dokter1 = $group->first()->dokter1->nm_dokter ?? '-';
+                        $dokter2 = $group->first()->dokter2->nm_dokter ?? '-';
+                        $dokter3 = $group->first()->dokter3->nm_dokter ?? '-';
+                        $anestesi = $group->first()->anestesi->nm_dokter ?? '-';
+
+                        // Cek apakah semua data kosong
+                        $status_operasi = ($dokter1 === '-' && $dokter2 === '-' && $dokter3 === '-' && $anestesi === '-')
+                            ? 'Tidak Ada'
+                            : 'Ada';
+
+                        return [
+                            'Tanggal Operasi' => $tgl_operasi,
+                            'Dokter 1' => $dokter1,
+                            'Dokter 2' => $dokter2,
+                            'Dokter 3' => $dokter3,
+                            'Anestesi' => $anestesi,
+                            'Status Operasi' => $status_operasi,
+                        ];
+                    })
+                    ->values()
+                    : collect([
+                        [
+                            'Tanggal Operasi' => '-',
+                            'Dokter 1' => '-',
+                            'Dokter 2' => '-',
+                            'Dokter 3' => '-',
+                            'Anestesi' => '-',
+                            'Status Operasi' => 'Tidak Ada',
+                        ],
+                    ]);
+
+                $operasiStatus = $operasiGroup->pluck('Status Operasi')->unique()->implode(', ');
+                $tglOperasi = $operasiGroup->pluck('Tanggal Operasi')->toArray();
+                $dokter1 = $operasiGroup->pluck('Dokter 1')->toArray();
+                $dokter2 = $operasiGroup->pluck('Dokter 2')->toArray();
+                $dokter3 = $operasiGroup->pluck('Dokter 3')->toArray();
+                $anestesi = $operasiGroup->pluck('Dokter 3')->toArray();
+
 
                 $kamar_data = $pasien->kamarinap->map(function ($kamarInap) {
                     return [
@@ -584,11 +622,13 @@ class RincianRawatInapControllers extends Controller
                     'sep' => substr($pasien->sep->no_sep, -4),
                     'nm_pasien' => $pasien->pasien->nm_pasien ?? 'Tidak Diketahui Nama Pasien',
                     'dokter_dpjp' => $dokter_dpjp,
-                    'dokter1' => $dokter_operator['dokter1'],
-                    'dokter2' => $dokter_operator['dokter2'],
-                    'dokter3' => $dokter_operator['dokter3'],
-                    'anestesi' => $dokter_operator['anestesi'],
-                    'operasi' => $operasiStatus,
+
+                    'operasi' => $operasiGroup->values(),
+                    'dokter1' => $dokter1,
+                    'dokter2' => $dokter2,
+                    'dokter3' => $dokter3,
+                    'anestesi' => $anestesi,
+                    'operasiStatus' => $operasiStatus,
 
                     'kunjungan' => $grouped_dokter->values(),
                     'Nama Kunjungan' => $nama_kunjungan,
@@ -618,6 +658,12 @@ class RincianRawatInapControllers extends Controller
                 ];
             }
         }
+
+        // return response()->json([
+        //     'success' => true,
+        //     'message' => 'Data ditemukan',
+        //     'data' => array_values($data_pasien) // Konversi ke array numerik
+        // ], 200);
 
         session(['data_pasien' => $data_pasien]);
         return view('admin', compact('tgl_keluar_start', 'tgl_keluar_end', 'kode_bangsal', 'bangsalList', 'data_pasien'));
@@ -765,12 +811,10 @@ class RincianRawatInapControllers extends Controller
 
     public function tes(Request $request)
     {
-        $tgl_keluar_start = $request->input('tgl_keluar_start', date('Y-m-d'));
-        $tgl_keluar_end = $request->input('tgl_keluar_end', date('Y-m-d'));
-        $kode_bangsal = $request->input('kode_bangsal');
+        $no_rawat = $request->input('no_rawat');
 
-        // Query pasien berdasarkan tanggal dan kode bangsal
-        $pasienList = RegPeriksa::with([
+        // Query pasien berdasarkan nomor rawat
+        $pasien = RegPeriksa::with([
             'pasien',
             'sep',
             'dpjp.dokter',
@@ -785,18 +829,9 @@ class RincianRawatInapControllers extends Controller
             'periksaRadiologi',
             'hemodialisa',
             'rawatInapDrpr.JnsPerawatanInap'
-        ])
-            ->whereHas('kamarinap.kamar.bangsal', function ($query) use ($kode_bangsal) {
-                if ($kode_bangsal) {
-                    $query->where('kd_bangsal', $kode_bangsal);
-                }
-            })
-            ->whereHas('kamarinap', function ($query) use ($tgl_keluar_start, $tgl_keluar_end) {
-                $query->whereBetween('tgl_keluar', [$tgl_keluar_start, $tgl_keluar_end]);
-            })
-            ->get();
+        ])->where('no_rawat', $no_rawat)->first(); // Ambil satu data saja
 
-        if ($pasienList->isEmpty()) {
+        if (!$pasien) {
             return response()->json([
                 'success' => false,
                 'message' => 'Data tidak ditemukan',
@@ -804,213 +839,62 @@ class RincianRawatInapControllers extends Controller
             ], 404);
         }
 
-        $data_pasien = [];
+        $operasi = $pasien->operasi;
 
-        foreach ($pasienList as $pasien) {
-            if ($pasien && $pasien->dpjp && $pasien->sep && $pasien->sep->no_sep) {
+        $groupedData = [];
 
-                // Daftar kode rawat yang diizinkan
-                $allowed_kode_rawat = ['RI00072', 'RI00073', 'RI00074', 'RI00075'];
+        foreach ($operasi as $op) {
+            $tanggal = $op->tgl_operasi ?? 'Tanpa Tanggal'; // Jika tidak ada tanggal
 
-                // Filter rawatinapdr berdasarkan kode rawat yang diizinkan, lalu transformasikan datanya
-                $dokter_list = $pasien->rawatinapdr
-                    ->filter(function ($rawat) use ($allowed_kode_rawat) {
-                        // Periksa apakah kode rawat termasuk dalam daftar yang diizinkan
-                        return in_array($rawat->kode->kd_jenis_prw, $allowed_kode_rawat);
-                    })
-                    ->map(function ($rawat) {
-                        // Ubah data rawat menjadi array dengan informasi yang diperlukan
-                        return [
-                            'kd_dokter' => $rawat->dokter->kd_dokter ?? 'Tidak Diketahui',
-                            'nama_dokter' => $rawat->dokter->nm_dokter ?? 'Tidak Diketahui',
-                            'kd_jenis_prw' => $rawat->kode->kd_jenis_prw ?? 'Tidak Diketahui',
-                            'nm_perawatan' => $rawat->kode->nm_perawatan ?? 'Tidak Diketahui',
-                        ];
-                    });
-
-                $grouped_dokter = $dokter_list->groupBy(function ($item) {
-                    // Mengelompokkan berdasarkan kombinasi kd_dokter, nama_dokter, dan kd_jenis_prw
-                    return $item['kd_dokter'] . '|' . $item['nama_dokter'] . '|' . $item['kd_jenis_prw'];
-                })->map(function ($items, $key) {
-                    // Memisahkan kembali kd_dokter, nama_dokter, dan kd_jenis_prw dari key
-                    [$kd_dokter, $nama_dokter, $kd_jenis_prw] = explode('|', $key);
-
-                    $jumlah_kode = $items->count();
-                    $nm_perawatan = $items->pluck('nm_perawatan')->first();
-
-                    return [
-                        'kd_dokter' => $kd_dokter,
-                        'nama_dokter' => $nama_dokter,
-                        'kd_jenis_prw' => $kd_jenis_prw,
-                        'nm_perawatan' => $nm_perawatan,
-                        'jumlah_kode' => $jumlah_kode,
-                    ];
-                });
-
-
-                $dokter_operator = [
-                    'dokter1' => $pasien->operasi->dokter1->nm_dokter ?? '-',
-                    'dokter2' => $pasien->operasi->dokter2->nm_dokter ?? '-',
-                    'dokter3' => $pasien->operasi->dokter3->nm_dokter ?? '-',
-                    'anestesi' => $pasien->operasi->anestesi->nm_dokter ?? '-',
+            // Pastikan hanya satu entri per tanggal
+            if (!isset($groupedData[$tanggal])) {
+                $groupedData[$tanggal] = [
+                    'tanggal' => $tanggal,
+                    'dokter1' => [
+                        'kd_dokter' => '-',
+                        'nm_dokter' => '-'
+                    ],
+                    'dokter2' => [
+                        'kd_dokter' => '-',
+                        'nm_dokter' => '-'
+                    ],
+                    'dokter3' => [
+                        'kd_dokter' => '-',
+                        'nm_dokter' => '-'
+                    ],
+                    'anestesi' => [
+                        'kd_dokter' => '-',
+                        'nm_dokter' => '-'
+                    ]
                 ];
+            }
 
-                $dokter_dpjp = $pasien->dpjp->first()->dokter->nm_dokter ?? '-';
-
-                //operasi
-                $operasiStatus = $pasien->operasi ? 'Ada' : 'Tidak Ada';
-
-                $endoskopi_data = $pasien->rawatinapdr->contains(fn($rawat) => $rawat->kode->kd_jenis_prw === 'RI00093') ? 'Ada' : 'Tidak ada';
-                $ekokardiografi = $pasien->rawatinapdr->contains(fn($rawat) => $rawat->kode->kd_jenis_prw === 'RI00093') ? 'Ada' : 'Tidak ada';
-
-                $lab_data = [
-                    'Status' => $pasien->periksalab && !$pasien->periksalab->isEmpty() ? 'Ada' : 'Tidak ada',
-                    'Dokter perujuk' => $pasien->periksalab && !$pasien->periksalab->isEmpty()
-                        ? $pasien->periksalab->map(function ($lab) {
-                            return $lab->dokter->nm_dokter ?? '-';
-                        })->unique()->implode(', ')
-                        : '-',
+            // Isi data dokter jika tersedia
+            if ($op->dokter1 && !empty($op->dokter1->kd_dokter) && !empty($op->dokter1->nm_dokter)) {
+                $groupedData[$tanggal]['dokter1'] = [
+                    'kd_dokter' => $op->dokter1->kd_dokter,
+                    'nm_dokter' => $op->dokter1->nm_dokter
                 ];
+            }
 
-
-                $radiologi_data = [
-                    'Status' =>  $pasien->periksaRadiologi && !$pasien->periksaRadiologi->isEmpty() ? 'Ada' : 'Tidak ada',
-                    'Dokter perujuk' => $pasien->periksaRadiologi && !$pasien->periksaRadiologi->isEmpty()
-                        ? $pasien->periksaRadiologi->map(function ($radio) {
-                            return $radio->dokter->nm_dokter ?? '-';
-                        })->unique()->implode(', ')
-                        : '-',
+            if ($op->dokter2 && !empty($op->dokter2->kd_dokter) && !empty($op->dokter2->nm_dokter)) {
+                $groupedData[$tanggal]['dokter2'] = [
+                    'kd_dokter' => $op->dokter2->kd_dokter,
+                    'nm_dokter' => $op->dokter2->nm_dokter
                 ];
+            }
 
-
-                $hd_data = $pasien->hemodialisa && !$pasien->hemodialisa->isEmpty() ? 'Ada' : 'Tidak ada';
-
-                $kamar_data = $pasien->kamarinap->map(function ($kamarInap) {
-                    return [
-                        'bed' => $kamarInap->kd_kamar ?? '-',
-                        'bangsal' => $kamarInap->kamar->bangsal->nm_bangsal ?? '-',
-                        'lama' => $kamarInap->lama ?? '-',
-                    ];
-                });
-
-                //icu ada venti or no
-                // $venti_data = $pasien->rawatInapDrpr ?? '-';
-
-                // $venti_data = $pasien->rawatInapDrpr->map(function ($item) {
-                //     return optional($item->JnsPerawatanInap)->nm_perawatan ?? '-';
-                // })->filter()->unique()->values();
-
-                // $venti_data = [
-                //     'Ventilator' => $pasien->rawatInapDrpr
-                //         ? $pasien->rawatInapDrpr->filter(function ($ventilator) {
-                //             return $ventilator->JnsPerawatanInap && $ventilator->JnsPerawatanInap->kd_jenis_prw === 'RI00034';
-                //         })->all()
-                //         : 'Tidak ada',
-                // ];
-
-                $kamar_venti = [
-                    'Camar' => $pasien->kamarinap
-                        ? $pasien->kamarinap->filter(function ($kamarventi) {
-                            return $kamarventi->kamar && $kamarventi->kamar->kd_bangsal === 'ICU';
-                        })->all()
-                        : 'Tidak ada',
+            if ($op->dokter3 && !empty($op->dokter3->kd_dokter) && !empty($op->dokter3->nm_dokter)) {
+                $groupedData[$tanggal]['dokter3'] = [
+                    'kd_dokter' => $op->dokter3->kd_dokter,
+                    'nm_dokter' => $op->dokter3->nm_dokter
                 ];
+            }
 
-                $venti_data = $pasien->rawatInapDrpr
-                    ? $pasien->rawatInapDrpr->filter(function ($ventilator) {
-                        return $ventilator->JnsPerawatanInap && $ventilator->JnsPerawatanInap->kd_jenis_prw === 'RI00034';
-                    })->all()
-                    : 'Tidak ada';
-
-                $venti_in_icu = 'Tidak';
-                if (!empty($venti_data) && !empty($pasien->kamarinap)) {
-                    foreach ($pasien->kamarinap as $kamar) {
-                        if ($kamar->kamar->bangsal->kd_bangsal === 'ICU') {
-                            foreach ($venti_data as $ventilator) {
-                                $venti_date = $ventilator->tgl_perawatan;
-                                $venti_time = $ventilator->jam_rawat;
-
-                                if (
-                                    $venti_date === $kamar->tgl_masuk &&
-                                    $venti_time >= $kamar->jam_masuk &&
-                                    ($venti_date < $kamar->tgl_keluar || $venti_time <= $kamar->jam_keluar)
-                                ) {
-                                    $venti_in_icu = 'Ada';
-                                    break 2;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                $intubasi_data = $pasien->rawatInapDrpr
-                    ? $pasien->rawatInapDrpr->filter(function ($intubasi) {
-                        return $intubasi->JnsPerawatanInap && $intubasi->JnsPerawatanInap->kd_jenis_prw === 'RI00090';
-                    })->all()
-                    : [];
-
-                $intubasi_in_icu = 'Tidak';
-                $dokter_intubasi = [];
-
-                if (!empty($intubasi_data) && !empty($pasien->kamarinap)) {
-                    foreach ($pasien->kamarinap as $kamar) {
-                        // Pastikan bangsal adalah ICU
-                        if ($kamar->kamar->bangsal->kd_bangsal === 'ICU') {
-                            foreach ($intubasi_data as $intubasi) {
-                                $intubasi_date = $intubasi->tgl_perawatan;
-                                $intubasi_time = $intubasi->jam_rawat;
-
-                                if (
-                                    $intubasi_date === $kamar->tgl_masuk &&
-                                    $intubasi_time >= $kamar->jam_masuk &&
-                                    ($intubasi_date < $kamar->tgl_keluar || $intubasi_time <= $kamar->jam_keluar)
-                                ) {
-                                    $intubasi_in_icu = 'Ada';
-
-                                    // Menyimpan data dokter
-                                    $dokter_intubasi[] = [
-                                        'kd_dokter' => $intubasi->kd_dokter,
-                                        'nama_dokter' => optional($intubasi->dokter)->nm_dokter ?? '-'
-                                    ];
-                                }
-                            }
-                        }
-                    }
-                }
-
-                // Hilangkan duplikat data dokter (jika diperlukan)
-                $dokter_intubasi = collect($dokter_intubasi)->unique('kd_dokter')->values()->all();
-
-                // Format output
-                $intubasi_result = [
-                    'status' => $intubasi_in_icu,
-                    'dokter' => $dokter_intubasi,
-                ];
-
-                $dokter_igd = $pasien;
-
-                $data_pasien[] = [
-                    'no_rawat' => $pasien->no_rawat,
-                    'no_rkm_medis' => $pasien->no_rkm_medis,
-                    'sep' => substr($pasien->sep->no_sep, -4),
-                    'nm_pasien' => $pasien->pasien->nm_pasien ?? "tidak tahu",
-                    'dokter_dpjp' => $dokter_dpjp,
-                    'dokter1' => $dokter_operator['dokter1'],
-                    'dokter2' => $dokter_operator['dokter2'],
-                    'dokter3' => $dokter_operator['dokter3'],
-                    'anestesi' => $dokter_operator['anestesi'],
-                    'opeasi' => $operasiStatus,
-                    'kunjungan' => $grouped_dokter->values(),
-                    'kamar' => $kamar_data,
-                    'lab' => $lab_data,
-                    'radiologi' => $radiologi_data,
-                    'hd' => $hd_data,
-                    'endoskopi' => $endoskopi_data,
-                    'ekokardiografi' => $ekokardiografi,
-                    'venti' => $venti_data,
-                    'kamarVeti' => $kamar_venti,
-                    'venti in icu' => $venti_in_icu,
-                    'venti in intubasi' => $intubasi_result
+            if ($op->anestesi && !empty($op->anestesi->kd_dokter) && !empty($op->anestesi->nm_dokter)) {
+                $groupedData[$tanggal]['anestesi'] = [
+                    'kd_dokter' => $op->anestesi->kd_dokter,
+                    'nm_dokter' => $op->anestesi->nm_dokter
                 ];
             }
         }
@@ -1018,7 +902,7 @@ class RincianRawatInapControllers extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Data ditemukan',
-            'data' => $dokter_igd
+            'data' => array_values($groupedData) // Konversi ke array numerik
         ], 200);
     }
 }

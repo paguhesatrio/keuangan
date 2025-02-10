@@ -31,7 +31,7 @@ class RegPeriksa extends Model
 
     public function operasi()
     {
-        return $this->belongsTo(Operasi::class, 'no_rawat', 'no_rawat');
+        return $this->hasMany(Operasi::class, 'no_rawat', 'no_rawat');
     }
 
     public function rawatJl()
