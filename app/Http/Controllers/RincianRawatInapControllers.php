@@ -100,16 +100,52 @@ class RincianRawatInapControllers extends Controller
                 $nama_dokter = $grouped_dokter->pluck('nama_dokter')->toArray(); // Hanya nama dokter
                 $jumlah_kunjungan = $grouped_dokter->pluck('jumlah_kode')->toArray(); // Hanya jumlah kode
 
-                $dokter_operator = [
-                    'dokter1' => $pasien->operasi->dokter1->nm_dokter ?? '-',
-                    'dokter2' => $pasien->operasi->dokter2->nm_dokter ?? '-',
-                    'dokter3' => $pasien->operasi->dokter3->nm_dokter ?? '-',
-                    'anestesi' => $pasien->operasi->anestesi->nm_dokter ?? '-',
-                ];
-
                 $dokter_dpjp = $pasien->dpjp->first()->dokter->nm_dokter ?? '-';
 
-                $operasiStatus = $pasien->operasi ? 'Ada' : 'Tidak Ada';
+                //Operasi
+                $operasiGroup = $pasien->operasi && !$pasien->operasi->isEmpty()
+                    ? $pasien->operasi
+                    ->groupBy(function ($operasi) {
+                        return $operasi->tgl_operasi; // Kelompokkan berdasarkan tgl_operasi
+                    })
+                    ->map(function ($group, $tgl_operasi) {
+                        $dokter1 = $group->first()->dokter1->nm_dokter ?? '-';
+                        $dokter2 = $group->first()->dokter2->nm_dokter ?? '-';
+                        $dokter3 = $group->first()->dokter3->nm_dokter ?? '-';
+                        $anestesi = $group->first()->anestesi->nm_dokter ?? '-';
+
+                        // Cek apakah semua data kosong
+                        $status_operasi = ($dokter1 === '-' && $dokter2 === '-' && $dokter3 === '-' && $anestesi === '-')
+                            ? 'Tidak Ada'
+                            : 'Ada';
+
+                        return [
+                            'Tanggal Operasi' => $tgl_operasi,
+                            'Dokter 1' => $dokter1,
+                            'Dokter 2' => $dokter2,
+                            'Dokter 3' => $dokter3,
+                            'Anestesi' => $anestesi,
+                            'Status Operasi' => $status_operasi,
+                        ];
+                    })
+                    ->values()
+                    : collect([
+                        [
+                            'Tanggal Operasi' => '-',
+                            'Dokter 1' => '-',
+                            'Dokter 2' => '-',
+                            'Dokter 3' => '-',
+                            'Anestesi' => '-',
+                            'Status Operasi' => 'Tidak Ada',
+                        ],
+                    ]);
+
+                $operasiStatus = $operasiGroup->pluck('Status Operasi')->unique()->implode(', ');
+                $tglOperasi = $operasiGroup->pluck('Tanggal Operasi')->toArray();
+                $dokter1 = $operasiGroup->pluck('Dokter 1')->toArray();
+                $dokter2 = $operasiGroup->pluck('Dokter 2')->toArray();
+                $dokter3 = $operasiGroup->pluck('Dokter 3')->toArray();
+                $anestesi = $operasiGroup->pluck('Anestesi')->toArray();
 
                 $kamar_data = $pasien->kamarinap->map(function ($kamarInap) {
                     return [
@@ -279,11 +315,15 @@ class RincianRawatInapControllers extends Controller
                     'sep' => substr($pasien->sep->no_sep, -4),
                     'nm_pasien' => $pasien->pasien->nm_pasien ?? 'Tidak Diketahui Nama Pasien',
                     'dokter_dpjp' => $dokter_dpjp,
-                    'dokter1' => $dokter_operator['dokter1'],
-                    'dokter2' => $dokter_operator['dokter2'],
-                    'dokter3' => $dokter_operator['dokter3'],
-                    'anestesi' => $dokter_operator['anestesi'],
-                    'operasi' => $operasiStatus,
+
+
+                    'operasi' => $operasiGroup->values(),
+                    'tanggal' => $tglOperasi,
+                    'dokter1' => $dokter1,
+                    'dokter2' => $dokter2,
+                    'dokter3' => $dokter3,
+                    'anestesi' => $anestesi,
+                    'operasiStatus' => $operasiStatus,
 
                     'kunjungan' => $grouped_dokter->values(),
                     'Nama Kunjungan' => $nama_kunjungan,
@@ -451,7 +491,8 @@ class RincianRawatInapControllers extends Controller
                 $dokter1 = $operasiGroup->pluck('Dokter 1')->toArray();
                 $dokter2 = $operasiGroup->pluck('Dokter 2')->toArray();
                 $dokter3 = $operasiGroup->pluck('Dokter 3')->toArray();
-                $anestesi = $operasiGroup->pluck('Dokter 3')->toArray();
+                $anestesi = $operasiGroup->pluck('Anestesi')->toArray();
+
 
 
                 $kamar_data = $pasien->kamarinap->map(function ($kamarInap) {
@@ -624,6 +665,7 @@ class RincianRawatInapControllers extends Controller
                     'dokter_dpjp' => $dokter_dpjp,
 
                     'operasi' => $operasiGroup->values(),
+                    'tanggal' => $tglOperasi,
                     'dokter1' => $dokter1,
                     'dokter2' => $dokter2,
                     'dokter3' => $dokter3,
@@ -703,11 +745,12 @@ class RincianRawatInapControllers extends Controller
             'No Sep',
             'Nama Pasien',
             'Nama Dokter DPJP',
+            'Operasi Status',
+            'Tanggal Operasi',
             'Dokter Operasi 1',
             'Dokter Operasi 2',
             'Dokter Operasi 3',
             'Dokter Anestesi',
-            'Operasi',
             'Nama Kunjungan',
             'Nama Dokter Berkunjung',
             'Jumlah Kunjungan',
@@ -760,6 +803,21 @@ class RincianRawatInapControllers extends Controller
             $jumlahRadData = $pasien['jumlahRadio'] ?? null;
             $jumlahRadFormatted = $this->formatArrayData($jumlahRadData);
 
+            $tanggalOperasi = $pasien['tanggal'] ?? null;
+            $tanggalOperasiFormatted = $this->formatArrayData($tanggalOperasi);
+
+            $dokter1 = $pasien['dokter1'] ?? null;
+            $dokter1Formatted = $this->formatArrayData($dokter1);
+
+            $dokter2 = $pasien['dokter2'] ?? null;
+            $dokter2Formatted = $this->formatArrayData($dokter2);
+
+            $dokter3 = $pasien['dokter3'] ?? null;
+            $dokter3Formatted = $this->formatArrayData($dokter3);
+
+            $anestesi = $pasien['anestesi'] ?? null;
+            $anestesiFormatted = $this->formatArrayData($anestesi);
+
             // Buat baris data
             $rowData = [
                 $pasien['no_rawat'] ?? '',
@@ -767,11 +825,12 @@ class RincianRawatInapControllers extends Controller
                 $pasien['sep'] ?? '',
                 $pasien['nm_pasien'] ?? '',
                 $pasien['dokter_dpjp'] ?? '',
-                $pasien['dokter1'] ?? '',
-                $pasien['dokter2'] ?? '',
-                $pasien['dokter3'] ?? '',
-                $pasien['anestesi'] ?? '',
-                $pasien['operasi'] ?? '',
+                $pasien['operasiStatus'] ?? '',
+                $tanggalOperasiFormatted,
+                $dokter1Formatted,
+                $dokter2Formatted,
+                $dokter3Formatted,
+                $anestesiFormatted,
                 $namaKunjunganFormatted,
                 $namaDokterFormatted,
                 $jumlahDokterFormatted,
