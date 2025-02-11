@@ -187,8 +187,144 @@ class LaporanBillingController extends Controller
 
         $totalSemuaLab = $totalLab + $totalDetailLab;
 
+        //Radiologi
+        // $radiologi = $pasien->periksaRadiologi;
+        $radiologi = $pasien->periksaRadiologi && !$pasien->periksaRadiologi->isEmpty()
+            ? [
+                'Ralan' => $pasien->periksaRadiologi->where('status', 'Ralan')->map(function ($periksaRadiologi) {
+                    return [
+                        'Nama periksaRadiologi' => $periksaRadiologi->jnsPerawatan->nm_perawatan ?? '-',
+                        'Harga' => $periksaRadiologi->biaya ?? '-',
+                    ];
+                })->values(),
+                'total_harga_ralan' => $pasien->periksaRadiologi->where('status', 'Ralan')->sum(function ($periksaRadiologi) {
+                    return $periksaRadiologi->biaya ?? 0;
+                }),
+                'Ranap' => $pasien->periksaRadiologi->where('status', 'Ranap')->map(function ($periksaRadiologi) {
+                    return [
+                        'Nama periksaRadiologi' => $periksaRadiologi->jnsPerawatan->nm_perawatan ?? '-',
+                        'Harga' => $periksaRadiologi->biaya ?? '-',
+                    ];
+                })->values(),
+                'total_harga_ranap' => $pasien->periksaRadiologi->where('status', 'Ranap')->sum(function ($periksaRadiologi) {
+                    return $periksaRadiologi->biaya ?? 0;
+                }),
+                'total_harga' => $pasien->periksaRadiologi->sum(function ($periksaRadiologi) {
+                    return $periksaRadiologi->biaya ?? 0;
+                }),
+            ]
+            : [
+                'Ralan' => collect([
+                    [
+                        'Nama periksaRadiologi' => '-',
+                        'Harga' => '-',
+                    ],
+                ]),
+                'Ranap' => collect([
+                    [
+                        'Nama periksaRadiologi' => '-',
+                        'Harga' => '-',
+                    ],
+                ]),
+                'total_harga' => 0,
+            ];
 
-        $operasiStatus = $pasien->operasi;
+
+        // Operasi
+        $operasiStatus = $pasien->operasi && !$pasien->operasi->isEmpty()
+            ? [
+                'Ralan' => $pasien->operasi->where('status', 'Ralan')->map(function ($operasi) {
+                    return [
+                        'Nama Operasi' => $operasi->paket->nm_perawatan ?? '-',
+                        'Harga' => $operasi->paket->alat ?? '-',
+                    ];
+                })->values(),
+                'total_harga_ralan' => $pasien->operasi->where('status', 'Ralan')->sum(function ($operasi) {
+                    return $operasi->paket->alat ?? 0;
+                }),
+                'Ranap' => $pasien->operasi->where('status', 'Ranap')->map(function ($operasi) {
+                    return [
+                        'Nama Operasi' => $operasi->paket->nm_perawatan ?? '-',
+                        'Harga' => $operasi->paket->alat ?? '-',
+                    ];
+                })->values(),
+                'total_harga_ranap' => $pasien->operasi->where('status', 'Ranap')->sum(function ($operasi) {
+                    return $operasi->paket->alat ?? 0;
+                }),
+                'total_harga_semua' => $pasien->operasi->sum(function ($operasi) {
+                    return $operasi->paket->alat ?? 0;
+                }),
+            ]
+            : [
+                'Ralan' => collect([
+                    [
+                        'Nama Operasi' => '-',
+                        'Harga' => '-',
+                    ],
+                ]),
+                'Ranap' => collect([
+                    [
+                        'Nama Operasi' => '-',
+                        'Harga' => '-',
+                    ],
+                ]),
+                'total_harga_ralan' => 0,
+                'total_harga_ranap' => 0,
+                'total_harga_semua' => 0,
+            ];
+
+        //Obat
+        $obat = $pasien->obat && !$pasien->obat->isEmpty()
+            ? [
+                'Ralan' => $pasien->obat->where('status', 'Ralan')
+                    ->groupBy('kode_brng')
+                    ->map(function ($group) {
+                        return [
+                            'Nama obat' => $group->first()->barang->nama_brng ?? '-',
+                            'kode obat' => $group->first()->barang->kode_brng ?? '-',
+                            'Harga Asli' => $group->first()->biaya_obat ?? '-', // Ambil harga asli dari item pertama dalam grup
+                            'Jumlah' => $group->sum('jml') ?? 0,
+                            'Harga' => $group->sum('total') ?? 0,
+                        ];
+                    })->values(),
+                'total_harga_ralan' => $pasien->obat->where('status', 'Ralan')->sum('total'),
+
+                'Ranap' => $pasien->obat->where('status', 'Ranap')
+                    ->groupBy('kode_brng')
+                    ->map(function ($group) {
+                        return [
+                            'Nama obat' => $group->first()->barang->nama_brng ?? '-',
+                            'kode obat' => $group->first()->barang->kode_brng ?? '-',
+                            'Harga Asli' => $group->first()->biaya_obat ?? '-', // Ambil harga asli dari item pertama dalam grup
+                            'Jumlah' => $group->sum('jml') ?? 0,
+                            'Harga' => $group->sum('total') ?? 0,
+                        ];
+                    })->values(),
+                'total_harga_ranap' => $pasien->obat->where('status', 'Ranap')->sum('total'),
+
+                'total_harga_semua' => $pasien->obat->sum('total'),
+            ]
+            : [
+                'Ralan' => collect([
+                    [
+                        'Nama obat' => '-',
+                        'Harga Asli' => '-',
+                        'Jumlah' => 0,
+                        'Harga' => 0,
+                    ],
+                ]),
+                'Ranap' => collect([
+                    [
+                        'Nama obat' => '-',
+                        'Harga Asli' => '-',
+                        'Jumlah' => 0,
+                        'Harga' => 0,
+                    ],
+                ]),
+                'total_harga_ralan' => 0,
+                'total_harga_ranap' => 0,
+                'total_harga_semua' => 0,
+            ];
 
         return response()->json([
             // 'no_rawat' => $pasien->no_rawat,
@@ -290,8 +426,9 @@ class LaporanBillingController extends Controller
             // 'DetailLab' => $detail,
             // 'TotalDetailLab' => $totalDetailLab,
             // 'TotalSemuaLab' =>  $totalSemuaLab,
-            'Operasi ' => $operasiStatus
-
+            // 'radiologi' => $radiologi,
+            // 'Operasi' => $operasiStatus,
+            'Obat' => $obat,
         ]);
     }
 
@@ -315,9 +452,10 @@ class LaporanBillingController extends Controller
             'kamarinap.kamar.bangsal',
             'periksalab.kode',
             'detailperiksalab.kode',
-            'periksaRadiologi',
+            'periksaRadiologi.jnsPerawatan',
             'hemodialisa',
-            'rawatInapDrpr.JnsPerawatanInap'
+            'rawatInapDrpr.JnsPerawatanInap',
+            'obat.barang',
         ])->where('no_rawat', $no_rawat)->first();
     }
 

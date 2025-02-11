@@ -493,8 +493,6 @@ class RincianRawatInapControllers extends Controller
                 $dokter3 = $operasiGroup->pluck('Dokter 3')->toArray();
                 $anestesi = $operasiGroup->pluck('Anestesi')->toArray();
 
-
-
                 $kamar_data = $pasien->kamarinap->map(function ($kamarInap) {
                     return [
                         'bed' => $kamarInap->kd_kamar ?? '-',
@@ -559,12 +557,6 @@ class RincianRawatInapControllers extends Controller
 
                 $dokterRadiologi = $radiologi_data->pluck('Dokter perujuk')->toArray(); // Memanggil 'Dokter perujuk' dari koleksi
                 $jumlahRadiologi = $radiologi_data->pluck('Jumlah rujukan')->toArray(); // Memanggil 'Jumlah rujukan' dari koleksi
-
-                // $hd_data = in_array("RI00071", [
-                //     $pasien->rawatInapDr ?? null,
-                //     $pasien->rawatInapDrPr ?? null,
-                //     $pasien->rawatInapPr ?? null,
-                // ]) ? "Ada" : "Tidak Ada";
 
                 $hd_data = (collect($pasien->rawatInapDr)->contains('kd_jenis_prw', 'RI00071') ||
                     collect($pasien->rawatInapDrPr)->contains('kd_jenis_prw', 'RI00071') ||
@@ -700,12 +692,6 @@ class RincianRawatInapControllers extends Controller
                 ];
             }
         }
-
-        // return response()->json([
-        //     'success' => true,
-        //     'message' => 'Data ditemukan',
-        //     'data' => array_values($data_pasien) // Konversi ke array numerik
-        // ], 200);
 
         session(['data_pasien' => $data_pasien]);
         return view('admin', compact('tgl_keluar_start', 'tgl_keluar_end', 'kode_bangsal', 'bangsalList', 'data_pasien'));

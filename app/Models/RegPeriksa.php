@@ -119,7 +119,8 @@ class RegPeriksa extends Model
         return $this->belongsTo(Poliklinik::class, 'kd_poli', 'kd_poli');
     }
 
-
-
-
+    public function obat()
+    {
+        return $this->hasMany(DetailPemberianObat::class, 'no_rawat', 'no_rawat');
+    }
 }

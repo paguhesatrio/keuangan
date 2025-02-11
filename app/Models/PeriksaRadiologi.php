@@ -23,4 +23,9 @@ class PeriksaRadiologi extends Model
     {
         return $this->belongsTo(Dokter::class, 'dokter_perujuk', 'kd_dokter');
     }
+
+    public function jnsPerawatan()
+    {
+        return $this->belongsTo(JnsPerawatanRadiologi::class, 'kd_jenis_prw', 'kd_jenis_prw');
+    }
 }
