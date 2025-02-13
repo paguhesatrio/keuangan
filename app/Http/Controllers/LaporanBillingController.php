@@ -127,64 +127,91 @@ class LaporanBillingController extends Controller
         $totalBiayaperawatanRanap = $totalperawatanDokterRanap + $totalperawatanPerawatRanap + $totalperawatanDokterPerawatRanap;
         $totalBiayaperawatan = $totalperawatanRalan + $totalBiayaperawatanRanap;
 
-        $lab_data = $pasien->periksalab && !$pasien->periksalab->isEmpty()
-            ? $pasien->periksalab
-            ->groupBy(function ($lab) {
-                // Kelompokkan berdasarkan nama pemeriksaan dan status
-                return ($lab->kode->nm_perawatan ?? '-') . '|' . ($lab->status ?? '-');
-            })
-            ->map(function ($group, $key) {
-                // Pecah nama pemeriksaan dan status dari key
-                [$namaPemeriksaan, $status] = explode('|', $key);
+        $periksalab = collect($pasien->periksalab ?? []);
+        $detailperiksalab = collect($pasien->detailperiksalab ?? []);
 
-                return [
-                    'kode' => $group->first()->kd_jenis_prw ?? '-',
-                    'Nama Pemeriksaan' => $namaPemeriksaan,
-                    'Jumlah rujukan' => $group->count(),
-                    'Biaya' => $group->first()->biaya ?? '-',
-                    'Status' => $status,
-                ];
-            })
-            ->values() // Menyusun ulang indeks
-            : collect([
-                [
-                    'kode' => '-',
-                    'Nama Pemeriksaan' => '-',
-                    'Jumlah rujukan' => 0,
-                    'Biaya' => 0,
-                    'Status' => '-',
-                ],
-            ]);
+        $groupedLab = function ($status, $groupingKey) use ($periksalab) {
+            return $periksalab->where('status', $status)
+                ->groupBy($groupingKey)
+                ->map(function ($group) {
+                    return [
+                        'kode' => $group->first()->kd_jenis_prw ?? '-',
+                        'Nama Pemeriksaan' => optional($group->first()->kode)->nm_perawatan ?? '-',
+                        'Jumlah rujukan' => $group->count(),
+                        'Biaya' => $group->sum('biaya') ?? 0,
+                        'tgl' => $group->first()->tgl_periksa ?? '-',
+                        'jam' => $group->first()->jam ?? '-',
+                    ];
+                })->values();
+        };
 
-        $totalLab = $lab_data->sum('Biaya');
+        // Data lab berdasarkan status (Ralan & Ranap)
+        $labData = $periksalab->isNotEmpty()
+            ? [
+                'Ralan' => $groupedLab('Ralan', fn($item) => $item->kd_jenis_prw),
+                'Ranap' => $groupedLab('Ranap', fn($item) => $item->kd_jenis_prw),
+                'total_harga_ralan' => $periksalab->where('status', 'Ralan')->sum('biaya'),
+                'total_harga_ranap' => $periksalab->where('status', 'Ranap')->sum('biaya'),
+            ]
+            : [
+                'Ralan' => collect([['kode' => '-', 'Nama Pemeriksaan' => '-', 'Jumlah rujukan' => 0, 'Biaya' => 0]]),
+                'Ranap' => collect([['kode' => '-', 'Nama Pemeriksaan' => '-', 'Jumlah rujukan' => 0, 'Biaya' => 0]]),
+                'total_harga_ralan' => 0,
+                'total_harga_ranap' => 0,
+            ];
 
-        $detail = $pasien->detailperiksalab && !$pasien->detailperiksalab->isEmpty()
-            ? $pasien->detailperiksalab
-            ->groupBy(function ($detaillab) {
-                // Kelompokkan berdasarkan `kd_jenis_prw`
-                return $detaillab->kd_jenis_prw ?? '-';
-            })
-            ->map(function ($group, $kd_jenis_prw) {
-                $firstItem = $group->first(); // Ambil elemen pertama dalam grup
-                return [
-                    'kode' => $kd_jenis_prw, // Ambil kode dari kunci grup
-                    'nama' => $firstItem->kode->nm_perawatan ?? '-', // Validasi jika `nm_perawatan` ada
-                    'Jumlah rujukan' => $group->count(), // Hitung jumlah elemen dalam grup
-                    'Biaya' => $group->sum('biaya_item') ?? 0, // Hitung total biaya item dalam grup
-                ];
-            })
-            ->values() // Menyusun ulang indeks
-            : collect([
-                [
-                    'kode' => '-',
-                    'nama' => '-',
-                    'Jumlah rujukan' => 0,
-                    'Biaya' => 0,
-                ],
-            ]);
+        $totalLabRalan = $labData['total_harga_ralan'];
+        $totalLabRanap = $labData['total_harga_ranap'];
+        $totalLab = $labData['total_harga_ralan'] + $labData['total_harga_ranap'];
 
-        $totalDetailLab = $detail->sum('Biaya');
+        // Variabel labDummy dengan grouping berdasarkan kode, tanggal, dan jam
+        $labDummy = $periksalab->isNotEmpty()
+            ? [
+                'Ralan' => $groupedLab('Ralan', fn($item) => "{$item->kd_jenis_prw}|{$item->tgl_periksa}|{$item->jam}"),
+                'Ranap' => $groupedLab('Ranap', fn($item) => "{$item->kd_jenis_prw}|{$item->tgl_periksa}|{$item->jam}"),
+                'total_harga_ralan' => $labData['total_harga_ralan'],
+                'total_harga_ranap' => $labData['total_harga_ranap'],
+            ]
+            : $labData;
 
+        // Detail lab dengan filter berdasarkan $labDummy
+        $detailLab = $detailperiksalab->isNotEmpty()
+            ? [
+                'Ralan' => $detailperiksalab->filter(fn($item) => collect($labDummy['Ralan'])
+                    ->where('kode', $item->kd_jenis_prw)
+                    ->where('tgl', $item->tgl_periksa)
+                    ->where('jam', $item->jam)
+                    ->isNotEmpty())
+                    ->groupBy(fn($item) => $item->kd_jenis_prw)
+                    ->map(function ($group) {
+                        return [
+                            'kode' => $group->first()->kd_jenis_prw ?? '-',
+                            'nama' => optional($group->first()->kode)->nm_perawatan ?? '-',
+                            'Jumlah rujukan' => $group->count(),
+                            'Biaya' => $group->sum('biaya_item') ?? 0,
+                        ];
+                    })->values(),
+
+                'Ranap' => $detailperiksalab->filter(fn($item) => collect($labDummy['Ranap'])
+                    ->where('kode', $item->kd_jenis_prw)
+                    ->where('tgl', $item->tgl_periksa)
+                    ->where('jam', $item->jam)
+                    ->isNotEmpty())
+                    ->groupBy(fn($item) => $item->kd_jenis_prw)
+                    ->map(function ($group) {
+                        return [
+                            'kode' => $group->first()->kd_jenis_prw ?? '-',
+                            'nama' => optional($group->first()->kode)->nm_perawatan ?? '-',
+                            'Jumlah rujukan' => $group->count(),
+                            'Biaya' => $group->sum('biaya_item') ?? 0,
+                        ];
+                    })->values()
+            ]
+            : ['Ralan' => collect([]), 'Ranap' => collect([])];
+
+        $totalDetailLabRalan = collect($detailLab['Ralan'])->sum('Biaya');
+        $totalDetailLabRanap = collect($detailLab['Ranap'])->sum('Biaya');
+        $totalDetailLab = collect($detailLab['Ralan'])->sum('Biaya') + collect($detailLab['Ranap'])->sum('Biaya');
         $totalSemuaLab = $totalLab + $totalDetailLab;
 
         //Radiologi
@@ -217,18 +244,21 @@ class LaporanBillingController extends Controller
                 'Ralan' => collect([
                     [
                         'Nama periksaRadiologi' => '-',
-                        'Harga' => '-',
+                        'Harga' => 0,
                     ],
                 ]),
                 'Ranap' => collect([
                     [
                         'Nama periksaRadiologi' => '-',
-                        'Harga' => '-',
+                        'Harga' => 0,
                     ],
                 ]),
                 'total_harga' => 0,
             ];
 
+        $totalradiologiRalan = collect($radiologi['Ralan'])->sum('Harga');
+        $totalradiologiRanap = collect($radiologi['Ranap'])->sum('Harga');
+        $totalradiologi = $totalradiologiRalan + $totalradiologiRanap;
 
         // Operasi
         $operasiStatus = $pasien->operasi && !$pasien->operasi->isEmpty()
@@ -259,19 +289,23 @@ class LaporanBillingController extends Controller
                 'Ralan' => collect([
                     [
                         'Nama Operasi' => '-',
-                        'Harga' => '-',
+                        'Harga' => 0,
                     ],
                 ]),
                 'Ranap' => collect([
                     [
                         'Nama Operasi' => '-',
-                        'Harga' => '-',
+                        'Harga' => 0,
                     ],
                 ]),
                 'total_harga_ralan' => 0,
                 'total_harga_ranap' => 0,
                 'total_harga_semua' => 0,
             ];
+
+        $totaloperasiStatusRalan = collect($operasiStatus['Ralan'])->sum('Harga');
+        $totaloperasiStatusRanap = collect($operasiStatus['Ranap'])->sum('Harga');
+        $totaloperasiStatus = $totaloperasiStatusRalan + $totaloperasiStatusRanap;
 
         //Obat
         $obat = $pasien->obat && !$pasien->obat->isEmpty()
@@ -282,7 +316,7 @@ class LaporanBillingController extends Controller
                         return [
                             'Nama obat' => $group->first()->barang->nama_brng ?? '-',
                             'kode obat' => $group->first()->barang->kode_brng ?? '-',
-                            'Harga Asli' => $group->first()->biaya_obat ?? '-', // Ambil harga asli dari item pertama dalam grup
+                            'Harga Asli' => $group->first()->barang->ralan ?? '-',
                             'Jumlah' => $group->sum('jml') ?? 0,
                             'Harga' => $group->sum('total') ?? 0,
                         ];
@@ -295,7 +329,7 @@ class LaporanBillingController extends Controller
                         return [
                             'Nama obat' => $group->first()->barang->nama_brng ?? '-',
                             'kode obat' => $group->first()->barang->kode_brng ?? '-',
-                            'Harga Asli' => $group->first()->biaya_obat ?? '-', // Ambil harga asli dari item pertama dalam grup
+                            'Harga Asli' => $group->first()->barang->ralan ?? '-',
                             'Jumlah' => $group->sum('jml') ?? 0,
                             'Harga' => $group->sum('total') ?? 0,
                         ];
@@ -326,109 +360,187 @@ class LaporanBillingController extends Controller
                 'total_harga_semua' => 0,
             ];
 
+        $totalobatRalan = collect($obat['Ralan'])->sum('Harga');
+        $totalobatRanap = collect($obat['Ranap'])->sum('Harga');
+        $totalobat = $totalobatRalan + $totalobatRanap;
+
+        //resep pulang
+        $resepPulang = $pasien->resepPulang && !$pasien->resepPulang->isEmpty()
+            ? $pasien->resepPulang->groupBy('kode_brng')->map(function ($group) {
+                return [
+                    'Nama' => $group->first()->barang->nama_brng ?? '-',
+                    'harga awal' => $group->first()->harga ?? '-',
+                    'Jumlah' => $group->sum('jml_barang') ?? 0,
+                    'harga' => $group->sum('total'),
+                ];
+            })->values()->all()
+            : [
+                [
+                    'Nama' => '-',
+                    'harga awal' => '-',
+                    'Jumlah' => 0,
+                    'harga' => 0,
+                ]
+            ];
+
+        // Menghitung total semua harga resep pulang
+        $totalresepPulang = $pasien->resepPulang ? $pasien->resepPulang->sum('total') : 0;
+
+        $register = $pasien->biaya_reg;
+
+        $totalRalan = $totalBiayaKonsultasiDokterRalan
+            + $totalBiayaVisteSpesialisRalan
+            + $totalBiayaVisiteUmumRalan
+            + $totalpemeriksaanRalan
+            + $totalTindakanRalan
+            + $totalperawatanRalan
+            + $totalLabRalan
+            + $totalDetailLabRalan
+            + $totalradiologiRalan
+            + $totaloperasiStatusRalan
+            + $totalobatRalan
+            + $totalresepPulang;
+
+        $totalRanap = $totalBiayaVisteRanap
+            + $totalBiayaPemeriksaanRanap
+            + $totalBiayaTindakanRanap
+            + $totalBiayaperawatanRanap
+            + $totalLabRanap
+            + $totalDetailLabRanap
+            + $totalradiologiRanap
+            + $totaloperasiStatusRanap
+            + $totalobatRanap;
+
+        $totalSemua = $totalRalan + $totalRanap + $register + $totalBiayaKamar;
+
+
         return response()->json([
-            // 'no_rawat' => $pasien->no_rawat,
-            // 'bed' => $bangsalKamar,
-            // 'lama' =>  $hasilPeriode,
-            // 'no_rkm_medis' => $pasien->no_rkm_medis,
-            // 'nm_pasien' => $pasien->pasien->nm_pasien ?? "tidak tahu",
-            // 'alamat' => $pasien->almt_pj ?? "tidak tahu",
-            // 'dpjp' => $dokter_dpjp,
-            // 'dokterIgd' => $dokter_igd,
-            // 'asalPermintaan' => $pasien->kd_poli,
-            // 'register' => $pasien->biaya_reg,
-            // 'kamar' =>  $hargaKamar,
-            // 'totalHrgKamar' => $totalBiayaKamar,
+            'no_rawat' => $pasien->no_rawat,
+            'bed' => $bangsalKamar,
+            'lama' =>  $hasilPeriode,
+            'no_rkm_medis' => $pasien->no_rkm_medis,
+            'nm_pasien' => $pasien->pasien->nm_pasien ?? "tidak tahu",
+            'alamat' => $pasien->almt_pj ?? "tidak tahu",
+            'dpjp' => $dokter_dpjp,
+            'dokterIgd' => $dokter_igd,
+            'asalPermintaan' => $pasien->kd_poli,
+            'register' => $register,
+            'kamar' =>  $hargaKamar,
+            'totalHrgKamar' => $totalBiayaKamar,
 
-            // 'KonsultasiDokterRalan' => $konsultasiDokterRalan,
-            // 'TotalHargaKonsultasiDokterRalan' => $totalBiayaKonsultasiDokterRalan,
-            // 'KonsulatsiDokterRanap' => $konsultasiDokterRanap,
-            // 'TotalHargaKonsulatsiDokterRanap' => $totalBiayaKonsultasiDokterRanap,
-            // 'KonsulatsiDokterPerawat' => $konsultasiDokterPerawatRanap,
-            // 'TotalHargaKonsulatsiDokterPerawat' => $totalBiayaKonsultasikonsultasiDokterPerawatRanap,
-            // 'TotalBiayaKonsultasi' => $totalBiayaKonsultasi,
+            'KonsultasiDokterRalan' => $konsultasiDokterRalan,
+            'TotalHargaKonsultasiDokterRalan' => $totalBiayaKonsultasiDokterRalan,
+            'KonsulatsiDokterRanap' => $konsultasiDokterRanap,
+            'TotalHargaKonsulatsiDokterRanap' => $totalBiayaKonsultasiDokterRanap,
+            'KonsulatsiDokterPerawat' => $konsultasiDokterPerawatRanap,
+            'TotalHargaKonsulatsiDokterPerawat' => $totalBiayaKonsultasikonsultasiDokterPerawatRanap,
+            'TotalBiayaKonsultasi' => $totalBiayaKonsultasi,
 
-            // 'KunjunganDokterRanap' => $kunjunganDokter,
-            // 'TotalBiayaDokterRanap' => $totalBiayaVisiteDokter,
-            // 'KunjunganDokterPerawatRanap' => $kunjunganDokterPerawat,
-            // 'TotalBiayaDokterPerawatRanap' =>  $totalBiayaVisiteDokterPerawat,
-            // 'TotalBiayaVisiteRanap' => $totalBiayaVisteRanap,
+            'KunjunganDokterRanap' => $kunjunganDokter,
+            'TotalBiayaDokterRanap' => $totalBiayaVisiteDokter,
+            'KunjunganDokterPerawatRanap' => $kunjunganDokterPerawat,
+            'TotalBiayaDokterPerawatRanap' =>  $totalBiayaVisiteDokterPerawat,
+            'TotalBiayaVisiteRanap' => $totalBiayaVisteRanap,
 
-            // 'KunjunganDokterSpesialisRalan' => $visiteDrSpesialisRalan,
-            // 'TotalBiayaDokterSpesialisRalan' => $totalBiayaVisiteDokterSpesialisRalan,
-            // 'KunjunganDokterSpesialisPerawatRalan' => $kunjunganDokterPerawatSpesialisRalan,
-            // 'TotalBiayaDokterPerawatSpesialisRalan' =>  $totalBiayaVisiteDokterPerawatSpesialisRalan,
-            // 'TotalBiayaVisiteSpesialisRalan' => $totalBiayaVisteSpesialisRalan,
+            'KunjunganDokterSpesialisRalan' => $visiteDrSpesialisRalan,
+            'TotalBiayaDokterSpesialisRalan' => $totalBiayaVisiteDokterSpesialisRalan,
+            'KunjunganDokterSpesialisPerawatRalan' => $kunjunganDokterPerawatSpesialisRalan,
+            'TotalBiayaDokterPerawatSpesialisRalan' =>  $totalBiayaVisiteDokterPerawatSpesialisRalan,
+            'TotalBiayaVisiteSpesialisRalan' => $totalBiayaVisteSpesialisRalan,
 
-            // 'KunjunganDokterUmumRalan' => $visiteDrUmumRalan,
-            // 'TotalBiayaDokterUmumRalan' => $totalBiayaVisiteDokterUmumRalan,
-            // 'KunjunganDokterPerawatUmumRalan' => $kunjunganDokterPerawatUmumRalan,
-            // 'totalBiayaVisiteDokterPerawatUmumRalan' => $totalBiayaVisiteDokterPerawatUmumRalan,
-            // 'TotalBiayaVisiteUmumRalan' => $totalBiayaVisiteUmumRalan,
-            // 'TotalBiayaVisiteUmum' => $totalBiayaViste,
+            'KunjunganDokterUmumRalan' => $visiteDrUmumRalan,
+            'TotalBiayaDokterUmumRalan' => $totalBiayaVisiteDokterUmumRalan,
+            'KunjunganDokterPerawatUmumRalan' => $kunjunganDokterPerawatUmumRalan,
+            'totalBiayaVisiteDokterPerawatUmumRalan' => $totalBiayaVisiteDokterPerawatUmumRalan,
+            'TotalBiayaVisiteUmumRalan' => $totalBiayaVisiteUmumRalan,
+            'TotalBiayaVisiteUmum' => $totalBiayaViste,
 
-            // //pemeriksaan
-            // 'PemeriksaanDokterRalan' => $pemeriksaanDokterRalan,
-            // 'totalPemeriksaanDokterRalan' => $totalpemeriksaanDokterRalan,
-            // 'PemeriksaanPerawatRalan' => $pemeriksaanPerawatRalan,
-            // 'totalPemeriksaanPerawatRalan' => $totalpemeriksaanPerawatRalan,
-            // 'PemeriksaanDokterPerawatRalan' => $pemeriksaanDokterPerawatRalan,
-            // 'totalPemeriksaanDokterPerawatRalan' => $totalpemeriksaanDokterPerawatRalan,
-            // 'totalPemeriksaanRalan' => $totalpemeriksaanRalan,
-            // // 
-            // 'PemeriksaanDokterRanap' => $pemeriksaanDokterRanap,
-            // 'totalPemeriksaanDokterRanap' => $totalpemeriksaanDokterRanap,
-            // 'PemeriksaanPerawatRanap' => $pemeriksaanPerawatRanap,
-            // 'totalPemeriksaanPerawatRanap' => $totalpemeriksaanPerawatRanap,
-            // 'PemeriksaanDokterPerawatRanap' => $pemeriksaanDokterPerawatRanap,
-            // 'totalPemeriksaanDokterPerawatRanap' => $totalPemeriksaanDokterPerawatRanap,
-            // 'totalPemeriksaanRanap' => $totalBiayaPemeriksaanRanap,
-            // 'totalPemeriksaan' => $totalBiayaPemeriksaan,
+            //pemeriksaan
+            'PemeriksaanDokterRalan' => $pemeriksaanDokterRalan,
+            'totalPemeriksaanDokterRalan' => $totalpemeriksaanDokterRalan,
+            'PemeriksaanPerawatRalan' => $pemeriksaanPerawatRalan,
+            'totalPemeriksaanPerawatRalan' => $totalpemeriksaanPerawatRalan,
+            'PemeriksaanDokterPerawatRalan' => $pemeriksaanDokterPerawatRalan,
+            'totalPemeriksaanDokterPerawatRalan' => $totalpemeriksaanDokterPerawatRalan,
+            'totalPemeriksaanRalan' => $totalpemeriksaanRalan,
+            // 
+            'PemeriksaanDokterRanap' => $pemeriksaanDokterRanap,
+            'totalPemeriksaanDokterRanap' => $totalpemeriksaanDokterRanap,
+            'PemeriksaanPerawatRanap' => $pemeriksaanPerawatRanap,
+            'totalPemeriksaanPerawatRanap' => $totalpemeriksaanPerawatRanap,
+            'PemeriksaanDokterPerawatRanap' => $pemeriksaanDokterPerawatRanap,
+            'totalPemeriksaanDokterPerawatRanap' => $totalPemeriksaanDokterPerawatRanap,
+            'totalPemeriksaanRanap' => $totalBiayaPemeriksaanRanap,
+            'totalPemeriksaan' => $totalBiayaPemeriksaan,
 
-            // // tindakan
-            // 'tindakanDokterRalan' => $tindakanDokterRalan,
-            // 'totaltindakanDokterRalan' => $totalTindakanDokterRalan,
-            // 'tindakanPerawatRalan' => $tindakanPerawatRalan,
-            // 'totaltindakanPerawatRalan' => $totalTindakanPerawatRalan,
-            // 'tindakanDokterPerawatRalan' => $tindakanDokterPerawatRalan,
-            // 'totaltindakanDokterPerawatRalan' => $totalTindakanDokterPerawatRalan,
-            // 'totaltindakanRalan' => $totalTindakanRalan,
-            // //
-            // 'tindakanDokterRanap' => $tindakanDokterRanap,
-            // 'totaltindakanDokterRanap' => $totalTindakanDokterRanap,
-            // 'tindakanPerawatRanap' => $tindakanPerawatRanap,
-            // 'totaltindakanRanap' => $totalTindakanPerawatRanap,
-            // 'tindakanDokterPerawatRanap' => $tindakanDokterPerawatRanap,
-            // 'totaltindakanDokterPerawatRanap' => $totalTindakanDokterPerawatRanap,
-            // 'totaltindakanRanap' => $totalBiayaTindakanRanap,
-            // 'totaltindakan' => $totalBiayaTindakan,
+            // tindakan
+            'tindakanDokterRalan' => $tindakanDokterRalan,
+            'totaltindakanDokterRalan' => $totalTindakanDokterRalan,
+            'tindakanPerawatRalan' => $tindakanPerawatRalan,
+            'totaltindakanPerawatRalan' => $totalTindakanPerawatRalan,
+            'tindakanDokterPerawatRalan' => $tindakanDokterPerawatRalan,
+            'totaltindakanDokterPerawatRalan' => $totalTindakanDokterPerawatRalan,
+            'totaltindakanRalan' => $totalTindakanRalan,
+            //
+            'tindakanDokterRanap' => $tindakanDokterRanap,
+            'totaltindakanDokterRanap' => $totalTindakanDokterRanap,
+            'tindakanPerawatRanap' => $tindakanPerawatRanap,
+            'totaltindakanRanap' => $totalTindakanPerawatRanap,
+            'tindakanDokterPerawatRanap' => $tindakanDokterPerawatRanap,
+            'totaltindakanDokterPerawatRanap' => $totalTindakanDokterPerawatRanap,
+            'totaltindakanRanap' => $totalBiayaTindakanRanap,
+            'totaltindakan' => $totalBiayaTindakan,
 
-            // //Perawatan
-            // 'PerawatanDokterRalan' => $perawatanDokterRalan,
-            // 'totalperawatanDokterRalan' => $totalperawatanDokterRalan,
-            // 'perawatanPerawatRalan' => $perawatanPerawatRalan,
-            // 'totalPerawatanPerawatRalan' => $totalperawatanPerawatRalan,
-            // 'perawatanDokterPerawatRalan' => $perawatanDokterPerawatRalan,
-            // 'totalperawatanDokterPerawatRalan' => $totalperawatanDokterPerawatRalan,
-            // 'totalperawatanRalan' => $totalperawatanRalan,
+            //Perawatan
+            'PerawatanDokterRalan' => $perawatanDokterRalan,
+            'totalperawatanDokterRalan' => $totalperawatanDokterRalan,
+            'perawatanPerawatRalan' => $perawatanPerawatRalan,
+            'totalPerawatanPerawatRalan' => $totalperawatanPerawatRalan,
+            'perawatanDokterPerawatRalan' => $perawatanDokterPerawatRalan,
+            'totalperawatanDokterPerawatRalan' => $totalperawatanDokterPerawatRalan,
+            'totalperawatanRalan' => $totalperawatanRalan,
 
-            // 'perawatanDokterRanap' => $perawatanDokterRanap,
-            // 'totalperawatanDokterRanap' => $totalperawatanDokterRanap,
-            // 'perawatanPerawatRanap' => $perawatanPerawatRanap,
-            // 'totalPerawatanPerawatRanap' => $totalperawatanPerawatRanap,
-            // 'perawatanDokterPerawatRanap' => $perawatanDokterPerawatRanap,
-            // 'totalperawatanDokterPerawatRanap' => $totalperawatanDokterPerawatRanap,
-            // 'totalperawatanRanap' => $totalBiayaperawatanRanap,
-            // 'totalperawatan' => $totalBiayaperawatan,
+            'perawatanDokterRanap' => $perawatanDokterRanap,
+            'totalperawatanDokterRanap' => $totalperawatanDokterRanap,
+            'perawatanPerawatRanap' => $perawatanPerawatRanap,
+            'totalPerawatanPerawatRanap' => $totalperawatanPerawatRanap,
+            'perawatanDokterPerawatRanap' => $perawatanDokterPerawatRanap,
+            'totalperawatanDokterPerawatRanap' => $totalperawatanDokterPerawatRanap,
+            'totalperawatanRanap' => $totalBiayaperawatanRanap,
+            'totalperawatan' => $totalBiayaperawatan,
 
-            // 'Lab' => $lab_data,
-            // 'TotalLab' => $totalLab,
-            // 'DetailLab' => $detail,
-            // 'TotalDetailLab' => $totalDetailLab,
-            // 'TotalSemuaLab' =>  $totalSemuaLab,
-            // 'radiologi' => $radiologi,
-            // 'Operasi' => $operasiStatus,
+            'Lab' => $labData,
+            'TotalLabRalan' => $totalLabRalan,
+            'TotalLabRanap' => $totalLabRanap,
+            'TotalLab' => $totalLab,
+
+            'DetailLab' => $detailLab,
+            'TotalDetailLabRalan' => $totalDetailLabRalan,
+            'TotalDetailLabRanap' => $totalDetailLabRanap,
+            'TotalDetailLab' => $totalDetailLab,
+            'TotalSemuaLab' =>  $totalSemuaLab,
+
+            'Radiologi' => $radiologi,
+            'TotalRadiologiRalan' => $totalradiologiRalan,
+            'TotalRadiologiRanap' => $totalradiologiRanap,
+            'TotalRadiologi' => $totalradiologi,
+
+            'Operasi' => $operasiStatus,
+            'TotalOperasiRalan' => $totaloperasiStatusRalan,
+            'TotalOperasiRanap' => $totaloperasiStatusRanap,
+            'TotalOperasi' => $totaloperasiStatus,
+
             'Obat' => $obat,
+            'TotalobatRalan' => $totalobatRalan,
+            'TotalobatRanap' => $totalobatRanap,
+            'Totalobat' => $totalobat,
+
+            'ResepPulang' => $resepPulang,
+            'totalresepPulang' => $totalresepPulang,
+
+            'totalRalan' => $totalRalan,
+            'totalRanap' => $totalRanap,
+            'totalSemua' => $totalSemua,
         ]);
     }
 
@@ -456,6 +568,7 @@ class LaporanBillingController extends Controller
             'hemodialisa',
             'rawatInapDrpr.JnsPerawatanInap',
             'obat.barang',
+            'resepPulang.barang',
         ])->where('no_rawat', $no_rawat)->first();
     }
 
@@ -698,8 +811,7 @@ class LaporanBillingController extends Controller
             })
             ->values();
     }
-
-
+    
     private function getPerawatRalan($pasien, $kategori)
     {
         return $pasien->rawatJlPr

@@ -33,3 +33,6 @@ Route::middleware(['auth.session'])->group(function () {
 // Route::get('/home', [RincianRawatInapControllers::class, 'RincianRawatInapPrint'])->name('rincian.rawat.inap');
 Route::get('/rincian-rawat-inap/print', [RincianRawatInapControllers::class, 'print'])->name('rincian.rawatinap.print');
 Route::get('/rincian-rawat-inap/export', [RincianRawatInapControllers::class, 'exportExcel'])->name('rincian.rawatinap.export');
+
+Route::get('/laporanBilling', [RincianRawatInapControllers::class, 'exportExcel'])->name('rincian.rawatinap.export');
+

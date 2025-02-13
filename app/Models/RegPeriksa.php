@@ -123,4 +123,9 @@ class RegPeriksa extends Model
     {
         return $this->hasMany(DetailPemberianObat::class, 'no_rawat', 'no_rawat');
     }
+
+    public function resepPulang()
+    {
+        return $this->hasMany(ResepPulang::class, 'no_rawat', 'no_rawat');
+    }
 }
