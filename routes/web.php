@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LaporanBillingController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RincianRawatInapControllers;
 use Illuminate\Support\Facades\Route;
@@ -34,5 +35,5 @@ Route::middleware(['auth.session'])->group(function () {
 Route::get('/rincian-rawat-inap/print', [RincianRawatInapControllers::class, 'print'])->name('rincian.rawatinap.print');
 Route::get('/rincian-rawat-inap/export', [RincianRawatInapControllers::class, 'exportExcel'])->name('rincian.rawatinap.export');
 
-Route::get('/laporanBilling', [RincianRawatInapControllers::class, 'exportExcel'])->name('rincian.rawatinap.export');
+Route::get('/tes', [LaporanBillingController::class, 'Billing']);
 

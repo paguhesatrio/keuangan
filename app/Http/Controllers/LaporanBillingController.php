@@ -409,12 +409,12 @@ class LaporanBillingController extends Controller
             + $totalDetailLabRanap
             + $totalradiologiRanap
             + $totaloperasiStatusRanap
-            + $totalobatRanap;
+            + $totalobatRanap + $totalBiayaKamar;
 
-        $totalSemua = $totalRalan + $totalRanap + $register + $totalBiayaKamar;
+        $totalSemua = $totalRalan + $totalRanap + $register;
 
 
-        return response()->json([
+        $data_pasien[] = [
             'no_rawat' => $pasien->no_rawat,
             'bed' => $bangsalKamar,
             'lama' =>  $hasilPeriode,
@@ -432,8 +432,8 @@ class LaporanBillingController extends Controller
             'TotalHargaKonsultasiDokterRalan' => $totalBiayaKonsultasiDokterRalan,
             'KonsulatsiDokterRanap' => $konsultasiDokterRanap,
             'TotalHargaKonsulatsiDokterRanap' => $totalBiayaKonsultasiDokterRanap,
-            'KonsulatsiDokterPerawat' => $konsultasiDokterPerawatRanap,
-            'TotalHargaKonsulatsiDokterPerawat' => $totalBiayaKonsultasikonsultasiDokterPerawatRanap,
+            'KonsulatsiDokterPerawatRanap' => $konsultasiDokterPerawatRanap,
+            'TotalHargaKonsulatsiDokterPerawatRanap' => $totalBiayaKonsultasikonsultasiDokterPerawatRanap,
             'TotalBiayaKonsultasi' => $totalBiayaKonsultasi,
 
             'KunjunganDokterRanap' => $kunjunganDokter,
@@ -541,7 +541,11 @@ class LaporanBillingController extends Controller
             'totalRalan' => $totalRalan,
             'totalRanap' => $totalRanap,
             'totalSemua' => $totalSemua,
-        ]);
+        ];
+
+        // return response()->json([ $data_pasien ]);
+
+        return view('laporanBilling', compact('no_rawat', 'data_pasien'));
     }
 
     private function getPasienData($no_rawat)
@@ -646,7 +650,7 @@ class LaporanBillingController extends Controller
 
     private function getDokterRalan($pasien, $kategori)
     {
-        return $pasien->rawatJlDr
+        $data = $pasien->rawatJlDr
             ->filter(function ($rawatJlDr) use ($kategori) {
                 return isset($rawatJlDr->kode) && $rawatJlDr->kode->kd_kategori === $kategori;
             })
@@ -656,7 +660,7 @@ class LaporanBillingController extends Controller
                     'nama' => $rawatJlDr->kode->nm_perawatan ?? '-',
                     'kodeDokter' => $rawatJlDr->dokter->kd_dokter ?? '-',
                     'dokter' => $rawatJlDr->dokter->nm_dokter ?? '-',
-                    'biaya' => $rawatJlDr->biaya_rawat ?? 0,
+                    'biaya' => $rawatJlDr->biaya_rawat ?? 0, // Pastikan defaultnya 0 agar bisa dijumlahkan
                 ];
             })
             ->groupBy(function ($item) {
@@ -675,11 +679,22 @@ class LaporanBillingController extends Controller
                 ];
             })
             ->values();
-    }
+    
+        // Jika tidak ada data, kembalikan nilai default
+        return $data->isEmpty() ? collect([[
+            'kode' => '-',
+            'nama' => '-',
+            'kodeDokter' => '-',
+            'dokter' => '-',
+            'biaya' => 0,
+            'jumlah' => 0,
+            'totalBiaya' => 0
+        ]]) : $data;
+    }    
 
     private function getDokterPerawatRalan($pasien, $kategori)
     {
-        return $pasien->rawatJlDrpr
+        $data = $pasien->rawatJlDrpr
             ->filter(function ($rawatJlDrpr) use ($kategori) {
                 return isset($rawatJlDrpr->kode) && $rawatJlDrpr->kode->kd_kategori === $kategori;
             })
@@ -689,7 +704,7 @@ class LaporanBillingController extends Controller
                     'nama' => $rawatJlDrpr->kode->nm_perawatan ?? '-',
                     'kodeDokter' => $rawatJlDrpr->dokter->kd_dokter ?? '-',
                     'dokter' => $rawatJlDrpr->dokter->nm_dokter ?? '-',
-                    'biaya' => $rawatJlDrpr->biaya_rawat ?? 0,
+                    'biaya' => $rawatJlDrpr->biaya_rawat ?? 0, // Pastikan defaultnya 0 agar bisa dijumlahkan
                 ];
             })
             ->groupBy(function ($item) {
@@ -708,11 +723,22 @@ class LaporanBillingController extends Controller
                 ];
             })
             ->values();
+    
+        // Jika tidak ada data, kembalikan nilai default
+        return $data->isEmpty() ? collect([[
+            'kode' => '-',
+            'nama' => '-',
+            'kodeDokter' => '-',
+            'dokter' => '-',
+            'biaya' => 0,
+            'jumlah' => 0,
+            'totalBiaya' => 0
+        ]]) : $data;
     }
 
     private function getDokterRanap($pasien, $kategori)
     {
-        return $pasien->rawatinapdr
+        $data = $pasien->rawatinapdr
             ->filter(function ($rawatinapdr) use ($kategori) {
                 return isset($rawatinapdr->kode) && $rawatinapdr->kode->kd_kategori === $kategori;
             })
@@ -722,7 +748,7 @@ class LaporanBillingController extends Controller
                     'nama' => $rawatinapdr->kode->nm_perawatan ?? '-',
                     'kodeDokter' => $rawatinapdr->dokter->kd_dokter ?? '-',
                     'dokter' => $rawatinapdr->dokter->nm_dokter ?? '-',
-                    'biaya' => $rawatinapdr->biaya_rawat ?? 0,
+                    'biaya' => $rawatinapdr->biaya_rawat ?? 0, // Ubah '-' menjadi 0 agar bisa dijumlahkan
                 ];
             })
             ->groupBy(function ($item) {
@@ -741,13 +767,23 @@ class LaporanBillingController extends Controller
                 ];
             })
             ->values();
+    
+        // Jika tidak ada data, kembalikan nilai default
+        return $data->isEmpty() ? collect([[
+            'kode' => '-',
+            'nama' => '-',
+            'kodeDokter' => '-',
+            'dokter' => '-',
+            'biaya' => 0,
+            'jumlah' => 0,
+            'totalBiaya' => 0
+        ]]) : $data;
     }
-
+    
 
     private function getDokterPerawatRanap($pasien, $kategori)
     {
-
-        return $pasien->rawatInapDrpr
+        $data = $pasien->rawatInapDrpr
             ->filter(function ($rawatInapDrpr) use ($kategori) {
                 return isset($rawatInapDrpr->JnsPerawatanInap) && $rawatInapDrpr->JnsPerawatanInap->kd_kategori === $kategori;
             })
@@ -757,7 +793,7 @@ class LaporanBillingController extends Controller
                     'nama' => $rawatInapDrpr->JnsPerawatanInap->nm_perawatan ?? '-',
                     'kodeDokter' => $rawatInapDrpr->dokter->kd_dokter ?? '-',
                     'dokter' => $rawatInapDrpr->dokter->nm_dokter ?? '-',
-                    "biaya" => $rawatInapDrpr->biaya_rawat ?? '-',
+                    "biaya" => $rawatInapDrpr->biaya_rawat ?? 0,
                 ];
             })
             ->groupBy(function ($item) {
@@ -776,12 +812,22 @@ class LaporanBillingController extends Controller
                 ];
             })
             ->values();
+    
+        // Jika tidak ada data, kembalikan nilai default
+        return $data->isEmpty() ? collect([[
+            'kode' => '-',
+            'nama' => '-',
+            'kodeDokter' => '-',
+            'dokter' => '-',
+            'biaya' => 0,
+            'jumlah' => 0,
+            'totalBiaya' => 0
+        ]]) : $data;
     }
 
     private function getPerawatRanap($pasien, $kategori)
     {
-
-        return $pasien->rawatInapPr
+        $data = $pasien->rawatInapPr
             ->filter(function ($rawatInapPr) use ($kategori) {
                 return isset($rawatInapPr->kode) && $rawatInapPr->kode->kd_kategori === $kategori;
             })
@@ -791,7 +837,7 @@ class LaporanBillingController extends Controller
                     'nama' => $rawatInapPr->kode->nm_perawatan ?? '-',
                     'kodeDokter' => $rawatInapPr->dokter->kd_dokter ?? '-',
                     'dokter' => $rawatInapPr->dokter->nm_dokter ?? '-',
-                    "biaya" => $rawatInapPr->biaya_rawat ?? '-',
+                    'biaya' => $rawatInapPr->biaya_rawat ?? 0, // Ubah '-' menjadi 0 agar bisa dijumlahkan
                 ];
             })
             ->groupBy(function ($item) {
@@ -810,11 +856,22 @@ class LaporanBillingController extends Controller
                 ];
             })
             ->values();
+    
+        // Jika tidak ada data, kembalikan nilai default
+        return $data->isEmpty() ? collect([[
+            'kode' => '-',
+            'nama' => '-',
+            'kodeDokter' => '-',
+            'dokter' => '-',
+            'biaya' => 0,
+            'jumlah' => 0,
+            'totalBiaya' => 0
+        ]]) : $data;
     }
     
     private function getPerawatRalan($pasien, $kategori)
     {
-        return $pasien->rawatJlPr
+        $data = $pasien->rawatJlPr
             ->filter(function ($rawatJlPr) use ($kategori) {
                 return isset($rawatJlPr->kode) && $rawatJlPr->kode->kd_kategori === $kategori;
             })
@@ -824,7 +881,7 @@ class LaporanBillingController extends Controller
                     'nama' => $rawatJlPr->kode->nm_perawatan ?? '-',
                     'kodeDokter' => $rawatJlPr->dokter->kd_dokter ?? '-',
                     'dokter' => $rawatJlPr->dokter->nm_dokter ?? '-',
-                    "biaya" => $rawatJlPr->biaya_rawat ?? '-',
+                    'biaya' => $rawatJlPr->biaya_rawat ?? 0, // Ubah '-' menjadi 0 agar bisa dijumlahkan
                 ];
             })
             ->groupBy(function ($item) {
@@ -843,6 +900,17 @@ class LaporanBillingController extends Controller
                 ];
             })
             ->values();
+    
+        // Jika tidak ada data, kembalikan nilai default
+        return $data->isEmpty() ? collect([[
+            'kode' => '-',
+            'nama' => '-',
+            'kodeDokter' => '-',
+            'dokter' => '-',
+            'biaya' => 0,
+            'jumlah' => 0,
+            'totalBiaya' => 0
+        ]]) : $data;
     }
 
     private function getTotalBiaya($total)
