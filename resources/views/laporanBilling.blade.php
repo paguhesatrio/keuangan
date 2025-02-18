@@ -228,13 +228,117 @@
             </td>
         </tr>
 
+        @if (!empty($data_pasien[0]['KonsultasiDokterRalan']))
+            <tr class='isi12' padding='0'>
+                <td padding='0' width='18%'>
+                    <font color='111111' size='1' face='Tahoma'>1. Konsultasi Dokter Rawat Jalan
+                </td>
+                <td padding='0' width='40%'>
+                    <font color='111111' size='1' face='Tahoma'>:
+                </td>
+                <td padding='0' width='2%'>
+                    <font color='111111' size='1' face='Tahoma'>
+                </td>
+                <td padding='0' width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                </td>
+                <td padding='0' width='5%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                </td>
+                <td padding='0' width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                </td>
+                <td padding='0' width='15%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                </td>
+            </tr>
+            @foreach ($data_pasien[0]['KonsultasiDokterRalan'] as $konsultasi)
+                <tr class='isi12'>
+                    <td width='18%'>
+                        <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
+                    </td>
+                    <td width='40%'>
+                        <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - (
+                            {{ $konsultasi['dokter'] }} )</font>
+                    </td>
+                    <td width='2%'>
+                        <font color='111111' size='1' face='Tahoma'>:</font>
+                    </td>
+                    <td width='10%' align='right'>
+                        <font color='111111' size='1' face='Tahoma'>
+                            {{ number_format($konsultasi['biaya'], 0, ',', '.') }}</font>
+                    </td>
+                    <td width='5%' align='right'>
+                        <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['jumlah'] }}</font>
+                    </td>
+                    <td width='10%' align='right'>
+                        <font color='111111' size='1' face='Tahoma'>0</font>
+                    </td>
+                    <td width='15%' align='right'>
+                        <font color='111111' size='1' face='Tahoma'>
+                            {{ number_format($konsultasi['totalBiaya'], 0, ',', '.') }}</font>
+                    </td>
+                </tr>
+            @endforeach
+        @endif
 
-
-
+        @if (!empty($data_pasien[0]['KonsultasiDokterRanap']))
+            <tr class='isi12' padding='0'>
+                <td padding='0' width='18%'>
+                    <font color='111111' size='1' face='Tahoma'>2. Konsultasi Dokter Rawat Inap
+                </td>
+                <td padding='0' width='40%'>
+                    <font color='111111' size='1' face='Tahoma'>:
+                </td>
+                <td padding='0' width='2%'>
+                    <font color='111111' size='1' face='Tahoma'>
+                </td>
+                <td padding='0' width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                </td>
+                <td padding='0' width='5%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                </td>
+                <td padding='0' width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                </td>
+                <td padding='0' width='15%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                </td>
+            </tr>
+            @foreach ($data_pasien[0]['KonsultasiDokterRanap'] as $konsultasi)
+                <tr class='isi12'>
+                    <td width='18%'>
+                        <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
+                    </td>
+                    <td width='40%'>
+                        <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - (
+                            {{ $konsultasi['dokter'] }} )</font>
+                    </td>
+                    <td width='2%'>
+                        <font color='111111' size='1' face='Tahoma'>:</font>
+                    </td>
+                    <td width='10%' align='right'>
+                        <font color='111111' size='1' face='Tahoma'>
+                            {{ number_format($konsultasi['biaya'], 0, ',', '.') }}</font>
+                    </td>
+                    <td width='5%' align='right'>
+                        <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['jumlah'] }}</font>
+                    </td>
+                    <td width='10%' align='right'>
+                        <font color='111111' size='1' face='Tahoma'>0</font>
+                    </td>
+                    <td width='15%' align='right'>
+                        <font color='111111' size='1' face='Tahoma'>
+                            {{ number_format($konsultasi['totalBiaya'], 0, ',', '.') }}</font>
+                    </td>
+                </tr>
+            @endforeach
+        @endif
 
         <tr class='isi12' padding='0'>
             <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>1. Konsultasi Dokter Rawat Jalan
+                <font color='111111' size='1' face='Tahoma'>3. Konsultasi Dokter Perawat Rawat Inap
             </td>
             <td padding='0' width='40%'>
                 <font color='111111' size='1' face='Tahoma'>:
@@ -255,13 +359,14 @@
                 <font color='111111' size='1' face='Tahoma'>
             </td>
         </tr>
-        @foreach ($data_pasien[0]['KonsultasiDokterRalan'] as $konsultasi)
+        @foreach ($data_pasien[0]['KonsultasiDokterPerawatRanap'] as $konsultasi)
             <tr class='isi12'>
                 <td width='18%'>
                     <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
                 </td>
                 <td width='40%'>
-                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - ( {{ $konsultasi['dokter'] }} )</font>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - (
+                        {{ $konsultasi['dokter'] }} )</font>
                 </td>
                 <td width='2%'>
                     <font color='111111' size='1' face='Tahoma'>:</font>
@@ -282,1426 +387,37 @@
                 </td>
             </tr>
         @endforeach
-        
 
-
-
-      
-        <tr class='isi12' padding='0'>
-          <td padding='0' width='18%'>
-              <font color='111111' size='1' face='Tahoma'>2. Konsultasi Dokter Rawat Inap
-          </td>
-          <td padding='0' width='40%'>
-              <font color='111111' size='1' face='Tahoma'>:
-          </td>
-          <td padding='0' width='2%'>
-              <font color='111111' size='1' face='Tahoma'>
-          </td>
-          <td padding='0' width='10%' align='right'>
-              <font color='111111' size='1' face='Tahoma'>
-          </td>
-          <td padding='0' width='5%' align='right'>
-              <font color='111111' size='1' face='Tahoma'>
-          </td>
-          <td padding='0' width='10%' align='right'>
-              <font color='111111' size='1' face='Tahoma'>
-          </td>
-          <td padding='0' width='15%' align='right'>
-              <font color='111111' size='1' face='Tahoma'>
-          </td>
-      </tr>
-      @foreach ($data_pasien[0]['KonsulatsiDokterRanap'] as $konsultasi)
-      <tr class='isi12'>
-          <td width='18%'>
-              <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
-          </td>
-          <td width='40%'>
-              <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - ( {{ $konsultasi['dokter'] }} )</font>
-          </td>
-          <td width='2%'>
-              <font color='111111' size='1' face='Tahoma'>:</font>
-          </td>
-          <td width='10%' align='right'>
-              <font color='111111' size='1' face='Tahoma'>{{ number_format($konsultasi['biaya'], 0, ',', '.') }}</font>
-          </td>
-          <td width='5%' align='right'>
-              <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['jumlah'] }}</font>
-          </td>
-          <td width='10%' align='right'>
-              <font color='111111' size='1' face='Tahoma'>0</font>
-          </td>
-          <td width='15%' align='right'>
-              <font color='111111' size='1' face='Tahoma'>{{ number_format($konsultasi['totalBiaya'], 0, ',', '.') }}</font>
-          </td>
-      </tr>
-  @endforeach
-  
-
-
-      <tr class='isi12' padding='0'>
-        <td padding='0' width='18%'>
-            <font color='111111' size='1' face='Tahoma'>3. Konsultasi Dokter Perawat Rawat Inap
-        </td>
-        <td padding='0' width='40%'>
-            <font color='111111' size='1' face='Tahoma'>:
-        </td>
-        <td padding='0' width='2%'>
-            <font color='111111' size='1' face='Tahoma'>
-        </td>
-        <td padding='0' width='10%' align='right'>
-            <font color='111111' size='1' face='Tahoma'>
-        </td>
-        <td padding='0' width='5%' align='right'>
-            <font color='111111' size='1' face='Tahoma'>
-        </td>
-        <td padding='0' width='10%' align='right'>
-            <font color='111111' size='1' face='Tahoma'>
-        </td>
-        <td padding='0' width='15%' align='right'>
-            <font color='111111' size='1' face='Tahoma'>
-        </td>
-    </tr>
-    @foreach ($data_pasien[0]['KonsulatsiDokterPerawatRanap'] as $konsultasi)
-    <tr class='isi12'>
-        <td width='18%'>
-            <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
-        </td>
-        <td width='40%'>
-            <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - ( {{ $konsultasi['dokter'] }} )</font>
-        </td>
-        <td width='2%'>
-            <font color='111111' size='1' face='Tahoma'>:</font>
-        </td>
-        <td width='10%' align='right'>
-            <font color='111111' size='1' face='Tahoma'>{{ number_format($konsultasi['biaya'], 0, ',', '.') }}</font>
-        </td>
-        <td width='5%' align='right'>
-            <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['jumlah'] }}</font>
-        </td>
-        <td width='10%' align='right'>
-            <font color='111111' size='1' face='Tahoma'>0</font>
-        </td> 
-        <td width='15%' align='right'>
-            <font color='111111' size='1' face='Tahoma'>{{ number_format($konsultasi['totalBiaya'], 0, ',', '.') }}</font>
-        </td>
-    </tr>
-@endforeach
-    
-    <tr class='isi12' padding='0'>
-      <td padding='0' width='18%'>
-          <font color='111111' size='1' face='Tahoma'>
-      </td>
-      <td padding='0' width='40%' colspan='6' align='right'>
-          <font color='111111' size='1' face='Tahoma'>Total Konsultasi :
-              {{ number_format($data_pasien[0]['TotalBiayaKonsultasi'], 0, ',', '.') }}
-      </td>
-  </tr>
-
-
-  <tr class='isi12' padding='0'>
-    <td padding='0' width='18%'>
-        <font color='111111' size='1' face='Tahoma'>4. Kunjungan Dokter Ranap
-    </td>
-    <td padding='0' width='40%'>
-        <font color='111111' size='1' face='Tahoma'>:
-    </td>
-    <td padding='0' width='2%'>
-        <font color='111111' size='1' face='Tahoma'>
-    </td>
-    <td padding='0' width='10%' align='right'>
-        <font color='111111' size='1' face='Tahoma'>
-    </td>
-    <td padding='0' width='5%' align='right'>
-        <font color='111111' size='1' face='Tahoma'>
-    </td>
-    <td padding='0' width='10%' align='right'>
-        <font color='111111' size='1' face='Tahoma'>
-    </td>
-    <td padding='0' width='15%' align='right'>
-        <font color='111111' size='1' face='Tahoma'>
-    </td>
-</tr>
-@foreach ($data_pasien[0]['KunjunganDokterRanap'] as $konsultasi)
-<tr class='isi12'>
-    <td width='18%'>
-        <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
-    </td>
-    <td width='40%'>
-        <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - ( {{ $konsultasi['dokter'] }} )</font>
-    </td>
-    <td width='2%'>
-        <font color='111111' size='1' face='Tahoma'>:</font>
-    </td>
-    <td width='10%' align='right'>
-        <font color='111111' size='1' face='Tahoma'>{{ number_format($konsultasi['biaya'], 0, ',', '.') }}</font>
-    </td>
-    <td width='5%' align='right'>
-        <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['jumlah'] }}</font>
-    </td>
-    <td width='10%' align='right'>
-        <font color='111111' size='1' face='Tahoma'>0</font>
-    </td>
-    <td width='15%' align='right'>
-        <font color='111111' size='1' face='Tahoma'>{{ number_format($konsultasi['totalBiaya'], 0, ',', '.') }}</font>
-    </td>
-</tr>
-@endforeach
-
-<tr class='isi12' padding='0'>
-  <td padding='0' width='18%'>
-      <font color='111111' size='1' face='Tahoma'>5. Kunjungan Dokter Perawat Ranap
-  </td>
-  <td padding='0' width='40%'>
-      <font color='111111' size='1' face='Tahoma'>:
-  </td>
-  <td padding='0' width='2%'>
-      <font color='111111' size='1' face='Tahoma'>
-  </td>
-  <td padding='0' width='10%' align='right'>
-      <font color='111111' size='1' face='Tahoma'>
-  </td>
-  <td padding='0' width='5%' align='right'>
-      <font color='111111' size='1' face='Tahoma'>
-  </td>
-  <td padding='0' width='10%' align='right'>
-      <font color='111111' size='1' face='Tahoma'>
-  </td>
-  <td padding='0' width='15%' align='right'>
-      <font color='111111' size='1' face='Tahoma'>
-  </td>
-</tr>
-@foreach ($data_pasien[0]['KunjunganDokterPerawatRanap'] as $konsultasi)
-<tr class='isi12'>
-  <td width='18%'>
-      <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
-  </td>
-  <td width='40%'>
-      <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - ( {{ $konsultasi['dokter'] }} )</font>
-  </td>
-  <td width='2%'>
-      <font color='111111' size='1' face='Tahoma'>:</font>
-  </td>
-  <td width='10%' align='right'>
-      <font color='111111' size='1' face='Tahoma'>{{ number_format($konsultasi['biaya'], 0, ',', '.') }}</font>
-  </td>
-  <td width='5%' align='right'>
-      <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['jumlah'] }}</font>
-  </td>
-  <td width='10%' align='right'>
-      <font color='111111' size='1' face='Tahoma'>0</font>
-  </td>
-  <td width='15%' align='right'>
-      <font color='111111' size='1' face='Tahoma'>{{ number_format($konsultasi['totalBiaya'], 0, ',', '.') }}</font>
-  </td>
-</tr>
-@endforeach
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-       
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>11. Obat & BHP
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>PULMICORT RESP 0,25 MG/0,5 IN 2 ML @20 (AMPUL)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>28,300
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>2.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>56,600
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>PULMICORT RESP 0,25 MG/0,5 IN 2 ML @20 (AMPUL)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>34,300
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>4.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>137,200
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>MASKER KN 95 (BAHAN MEDIS HABIS PAKAI)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>4,400
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>6.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>26,400
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>CANNOFIX 6x8 CM - PU (BAHAN MEDIS HABIS PAKAI)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>8,900
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>8,900
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>INFUSION SET DEWASA OI - 24 - OTSU (BAHAN MEDIS
-                    HABIS PAKAI)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>8,700
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>8,700
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>MASKER 3PLY HEADLOOP (BAHAN MEDIS HABIS PAKAI)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1,200
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>6.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>7,200
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>SPUIT 10CC (BAHAN MEDIS HABIS PAKAI)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1,800
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1,800
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>SPUIT 5CC (BAHAN MEDIS HABIS PAKAI)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1,400
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>5.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>7,000
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>JARUM INSULIN PEN NEEDLE 31G (BAHAN MEDIS HABIS
-                    PAKAI)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>2,100
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>2,100
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>MASKER 3PLY EARLOOP (BAHAN MEDIS HABIS PAKAI)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>800
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>3.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>2,400
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>ALKOHOL SWAB - ANARA (BAHAN MEDIS HABIS PAKAI)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>300
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>13.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>3,900
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>HANDSCOON STERILE 7.5 - TROGE (BAHAN MEDIS
-                    HABIS PAKAI)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>12,500
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>12,500
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>SPUIT 3CC (BAHAN MEDIS HABIS PAKAI)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1,100
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>12.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>13,200
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>NASAL CANNULA DEWASA (BAHAN MEDIS HABIS PAKAI)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>8,400
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>8,400
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>SPUIT 3CC (BAHAN MEDIS HABIS PAKAI)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1,400
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>5.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>7,000
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>HANDSCOON NON STERILE SIZE M (BAHAN MEDIS HABIS
-                    PAKAI)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1,700
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>18.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>30,600
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>HANDSCOON NON STERILE SIZE M (BAHAN MEDIS HABIS
-                    PAKAI)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1,400
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>6.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>8,400
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>SPUIT 10CC (BAHAN MEDIS HABIS PAKAI)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>2,400
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>2.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>4,800
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>IV CATHETER PLUS 20G - TROGE (BAHAN MEDIS HABIS
-                    PAKAI)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>25,200
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>25,200
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>MASKER NEBULIZER DEWASA (BAHAN MEDIS HABIS
-                    PAKAI)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>41,700
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>2.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>83,400
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>SPUIT 1CC (BAHAN MEDIS HABIS PAKAI)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1,500
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1,500
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>AQUADEST PRO INJECTION 25 ML&nbsp;&nbsp;(Infus)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>11,400
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>3.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>34,200
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>SANSULIN RAPID DISPOPEN (OBAT NON ORAL)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>118,000
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>118,000
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>FARMAVON INJ 4MG/2ML @10&nbsp;&nbsp;(OBAT NON
-                    ORAL)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>50,400
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>3.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>151,200
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>ONDANSENTRON HCL INJ 4MG/2ML
-                    @10&nbsp;&nbsp;(OBAT NON ORAL)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>7,000
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>6.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>42,000
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>RESPIVENT SOLUTION FOR INHALATION (OBAT NON
-                    ORAL)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>18,100
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>4.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>72,400
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>RANITIDIN INJ 50MG/2ML @100&nbsp;&nbsp;(OBAT
-                    NON ORAL)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1,500
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>2.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>3,000
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>CEFTRIAXONE INJ 1G @10&nbsp;&nbsp;(OBAT NON
-                    ORAL)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>13,900
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>4.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>55,600
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>CEFTRIAXONE INJ 1G @10&nbsp;&nbsp;(OBAT NON
-                    ORAL)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>11,500
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>2.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>23,000
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>INFUS SODIUM CHLORIDE 0.9%
-                    500ML&nbsp;&nbsp;(OBAT NON ORAL)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>8,000
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>3.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>24,000
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>RANITIDIN INJ 50MG/2ML @100&nbsp;&nbsp;(OBAT
-                    NON ORAL)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>2,500
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>4.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>10,000
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>BROMEX @10&nbsp;&nbsp;(OBAT NON ORAL)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>62,500
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>3.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>187,500
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>BIOCOMBIN 5000 INJ @10 (OBAT NON ORAL)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>5,800
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>5,800
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>FUROSEMIDE INJ 10MG @25&nbsp;&nbsp;(OBAT NON
-                    ORAL)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>2,200
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>3.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>6,600
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>MEGABAL INJEKSI @10 SANBE (OBAT NON ORAL)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>11,700
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>2.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>23,400
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>ONDANSENTRON HCL INJ 4MG/2ML
-                    @10&nbsp;&nbsp;(OBAT NON ORAL)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>5,800
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>3.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>17,400
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>RESPIVENT SOLUTION FOR INHALATION (OBAT NON
-                    ORAL)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>14,900
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>2.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>29,800
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>FUROSEMIDE INJ 10MG @25&nbsp;&nbsp;(OBAT NON
-                    ORAL)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>2,700
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>4.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>10,800
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>MIRASIC FORTE 650MG TAB @100 (OBAT ORAL)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>400
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>3.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1,200
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>ACETYLCISTEIN 200MG @60 (OBAT ORAL)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1,300
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>6.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>7,800
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>MIRASIC FORTE 650MG TAB @100 (OBAT ORAL)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>500
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>6.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>3,000
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>BISOPROLOL 2.5MG @100&nbsp;&nbsp;(OBAT ORAL)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>200
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>200
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>HEPARMIN @30&nbsp;&nbsp;(OBAT ORAL)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>7,900
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>3.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>23,700
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>ACETYLCISTEIN 200MG @60 (OBAT ORAL)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1,100
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>3.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>3,300
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>CANDESARTAN 8MG @30 (Tablet)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>500
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>500
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>SUCRALFATE TABLET 500 MG&nbsp;&nbsp;(Tablet)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>400
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>3.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1,200
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>CODEIN 20 MG @100&nbsp;&nbsp;(Tablet)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>2,000
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>3.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>6,000
-            </td>
-        </tr>
         <tr class='isi12' padding='0'>
             <td padding='0' width='18%'>
                 <font color='111111' size='1' face='Tahoma'>
             </td>
             <td padding='0' width='40%' colspan='6' align='right'>
-                <font color='111111' size='1' face='Tahoma'>Total Obat & BHP : 1,318,800
+                <font color='111111' size='1' face='Tahoma'>Rawat Jalan
+                    ({{ number_format($data_pasien[0]['TotalHargaKonsultasiDokterRalan'], 0, ',', '.') }}) + Rawat Inap
+                    ({{ number_format(
+                        $data_pasien[0]['TotalHargaKonsultasiDokterRanap'] + $data_pasien[0]['TotalHargaKonsultasiDokterPerawatRanap'],
+                        0,
+                        ',',
+                        '.',
+                    ) }})
             </td>
         </tr>
+
         <tr class='isi12' padding='0'>
             <td padding='0' width='18%'>
                 <font color='111111' size='1' face='Tahoma'>
             </td>
             <td padding='0' width='40%' colspan='6' align='right'>
-                <font color='111111' size='1' face='Tahoma'>Total Obat Bersih : 1,318,800
+                <font color='111111' size='1' face='Tahoma'>Total Konsultasi :
+                    {{ number_format($data_pasien[0]['TotalBiayaKonsultasi'], 0, ',', '.') }}
             </td>
         </tr>
+
+
         <tr class='isi12' padding='0'>
             <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>Resep Pulang
+                <font color='111111' size='1' face='Tahoma'>4. Kunjungan Dokter Spesialis Rawat Jalan
             </td>
             <td padding='0' width='40%'>
                 <font color='111111' size='1' face='Tahoma'>:
@@ -1722,419 +438,2124 @@
                 <font color='111111' size='1' face='Tahoma'>
             </td>
         </tr>
+        @foreach ($data_pasien[0]['KunjunganDokterSpesialisRalan'] as $konsultasi)
+            <tr class='isi12'>
+                <td width='18%'>
+                    <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
+                </td>
+                <td width='40%'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - (
+                        {{ $konsultasi['dokter'] }} )</font>
+                </td>
+                <td width='2%'>
+                    <font color='111111' size='1' face='Tahoma'>:</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['biaya'], 0, ',', '.') }}</font>
+                </td>
+                <td width='5%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['jumlah'] }}</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>0</font>
+                </td>
+                <td width='15%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['totalBiaya'], 0, ',', '.') }}</font>
+                </td>
+            </tr>
+        @endforeach
+
         <tr class='isi12' padding='0'>
             <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <font color='111111' size='1' face='Tahoma'>5. Kunjungan Dokter Perawat Spesialis Rawat Jalan
             </td>
             <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>BENEURON 2x1 sesudah makan (vitamin)
-            </td>
-            <td padding='0' width='2%'>
                 <font color='111111' size='1' face='Tahoma'>:
             </td>
+            <td padding='0' width='2%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
             <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1,000
+                <font color='111111' size='1' face='Tahoma'>
             </td>
             <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>6.0
+                <font color='111111' size='1' face='Tahoma'>
             </td>
             <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
+                <font color='111111' size='1' face='Tahoma'>
             </td>
             <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>6,000
+                <font color='111111' size='1' face='Tahoma'>
             </td>
         </tr>
+        @foreach ($data_pasien[0]['KunjunganDokterSpesialisPerawatRalan'] as $konsultasi)
+            <tr class='isi12'>
+                <td width='18%'>
+                    <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
+                </td>
+                <td width='40%'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - (
+                        {{ $konsultasi['dokter'] }} )</font>
+                </td>
+                <td width='2%'>
+                    <font color='111111' size='1' face='Tahoma'>:</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['biaya'], 0, ',', '.') }}</font>
+                </td>
+                <td width='5%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['jumlah'] }}</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>0</font>
+                </td>
+                <td width='15%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['totalBiaya'], 0, ',', '.') }}</font>
+                </td>
+            </tr>
+        @endforeach
+
         <tr class='isi12' padding='0'>
             <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <font color='111111' size='1' face='Tahoma'>6. Kunjungan Dokter Umum Rawat Jalan
             </td>
             <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>BENEURON 2x1 Sesudah makan (vitamin)
-            </td>
-            <td padding='0' width='2%'>
                 <font color='111111' size='1' face='Tahoma'>:
             </td>
+            <td padding='0' width='2%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
             <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1,000
+                <font color='111111' size='1' face='Tahoma'>
             </td>
             <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>6.0
+                <font color='111111' size='1' face='Tahoma'>
             </td>
             <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
+                <font color='111111' size='1' face='Tahoma'>
             </td>
             <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>6,000
+                <font color='111111' size='1' face='Tahoma'>
             </td>
         </tr>
+        @foreach ($data_pasien[0]['KunjunganDokterUmumRalan'] as $konsultasi)
+            <tr class='isi12'>
+                <td width='18%'>
+                    <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
+                </td>
+                <td width='40%'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - (
+                        {{ $konsultasi['dokter'] }} )</font>
+                </td>
+                <td width='2%'>
+                    <font color='111111' size='1' face='Tahoma'>:</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['biaya'], 0, ',', '.') }}</font>
+                </td>
+                <td width='5%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['jumlah'] }}</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>0</font>
+                </td>
+                <td width='15%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['totalBiaya'], 0, ',', '.') }}</font>
+                </td>
+            </tr>
+        @endforeach
+
         <tr class='isi12' padding='0'>
             <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <font color='111111' size='1' face='Tahoma'>7. Kunjungan Dokter Perawat Umum Rawat Jalan
             </td>
             <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>CANDESARTAN 8MG @30 1x1 sesudah makan pagi
-                    (darah tinggi)
-            </td>
-            <td padding='0' width='2%'>
                 <font color='111111' size='1' face='Tahoma'>:
             </td>
+            <td padding='0' width='2%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
             <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>500
+                <font color='111111' size='1' face='Tahoma'>
             </td>
             <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>3.0
+                <font color='111111' size='1' face='Tahoma'>
             </td>
             <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
+                <font color='111111' size='1' face='Tahoma'>
             </td>
             <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1,500
+                <font color='111111' size='1' face='Tahoma'>
             </td>
         </tr>
+        @foreach ($data_pasien[0]['KunjunganDokterPerawatUmumRalan'] as $konsultasi)
+            <tr class='isi12'>
+                <td width='18%'>
+                    <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
+                </td>
+                <td width='40%'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - (
+                        {{ $konsultasi['dokter'] }} )</font>
+                </td>
+                <td width='2%'>
+                    <font color='111111' size='1' face='Tahoma'>:</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['biaya'], 0, ',', '.') }}</font>
+                </td>
+                <td width='5%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['jumlah'] }}</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>0</font>
+                </td>
+                <td width='15%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['totalBiaya'], 0, ',', '.') }}</font>
+                </td>
+            </tr>
+        @endforeach
+
         <tr class='isi12' padding='0'>
             <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <font color='111111' size='1' face='Tahoma'>8. Kunjungan Dokter Rawat Inap
             </td>
             <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>CANDESARTAN 8MG @30 1x1 Sesudah makan (darah
-                    tinggi)
-            </td>
-            <td padding='0' width='2%'>
                 <font color='111111' size='1' face='Tahoma'>:
             </td>
+            <td padding='0' width='2%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
             <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>500
+                <font color='111111' size='1' face='Tahoma'>
             </td>
             <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>3.0
+                <font color='111111' size='1' face='Tahoma'>
             </td>
             <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
+                <font color='111111' size='1' face='Tahoma'>
             </td>
             <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1,500
+                <font color='111111' size='1' face='Tahoma'>
             </td>
         </tr>
+        @foreach ($data_pasien[0]['KunjunganDokterRanap'] as $konsultasi)
+            <tr class='isi12'>
+                <td width='18%'>
+                    <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
+                </td>
+                <td width='40%'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - (
+                        {{ $konsultasi['dokter'] }} )</font>
+                </td>
+                <td width='2%'>
+                    <font color='111111' size='1' face='Tahoma'>:</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['biaya'], 0, ',', '.') }}</font>
+                </td>
+                <td width='5%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['jumlah'] }}</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>0</font>
+                </td>
+                <td width='15%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['totalBiaya'], 0, ',', '.') }}</font>
+                </td>
+            </tr>
+        @endforeach
+
         <tr class='isi12' padding='0'>
             <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <font color='111111' size='1' face='Tahoma'>9. Kunjungan Dokter Perawat Rawat Inap
             </td>
             <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>CETIRIZINE 10MG TAB @100 1x1 sesudah makan
-                    malam (alergi)
-            </td>
-            <td padding='0' width='2%'>
                 <font color='111111' size='1' face='Tahoma'>:
             </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>500
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>3.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1,500
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
+            <td padding='0' width='2%'>
                 <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>CETIRIZINE 10MG TAB @100 1x1 Sesudah makan
-                    (alergi) malam
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
             </td>
             <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>500
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>3.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1,500
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
                 <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>EPRINOC TABLET @100 3x1 sesudah makan (kaku)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1,900
             </td>
             <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>9.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>17,100
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
                 <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>EPRINOC TABLET @100 3x1 Sesudah makan
-                    (tegang/nyeri otot)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
             </td>
             <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1,900
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>9.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>17,100
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
                 <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>ONDANSENTRON 4 MG&nbsp;&nbsp;TAB
-                    @100&nbsp;&nbsp;3x1 sebelum makan (mual)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>3,200
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>9.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
             </td>
             <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>28,800
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
                 <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>ONDANSENTRON 4 MG&nbsp;&nbsp;TAB
-                    @100&nbsp;&nbsp;3x1 Sebelum makan (mual/muntah)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>3,200
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>9.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>28,800
             </td>
         </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        @foreach ($data_pasien[0]['KunjunganDokterPerawatRanap'] as $konsultasi)
+            <tr class='isi12'>
+                <td width='18%'>
+                    <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
+                </td>
+                <td width='40%'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - (
+                        {{ $konsultasi['dokter'] }} )</font>
+                </td>
+                <td width='2%'>
+                    <font color='111111' size='1' face='Tahoma'>:</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['biaya'], 0, ',', '.') }}</font>
+                </td>
+                <td width='5%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['jumlah'] }}</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>0</font>
+                </td>
+                <td width='15%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['totalBiaya'], 0, ',', '.') }}</font>
+                </td>
+            </tr>
+        @endforeach
+
+
+        <tr class="isi12" style="padding:0;">
+            <td style="padding:0; width:18%;">
+                <font color="#111111" size="1" face="Tahoma"></font>
             </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>ORINOX 60MG @30&nbsp;&nbsp;1x1 sesudah makan
-                    (nyeri)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>10,900
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>3.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>32,700
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>ORINOX 60MG @30&nbsp;&nbsp;1x1 Sesudah makan
-                    (nyeri)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>10,900
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>3.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>32,700
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>PARACETAMOL 500MG TAB@100 3x1 sesudah makan
-                    (demam)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>400
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>9.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>3,600
+            <td style="padding:0; width:40%;" colspan="6" align="right">
+                <font color="#111111" size="1" face="Tahoma">
+                    Rawat Jalan
+                    ({{ number_format(
+                        $data_pasien[0]['TotalBiayaDokterSpesialisRalan'] +
+                            $data_pasien[0]['TotalBiayaDokterPerawatSpesialisRalan'] +
+                            $data_pasien[0]['TotalBiayaDokterUmumRalan'] +
+                            $data_pasien[0]['totalBiayaVisiteDokterPerawatUmumRalan'],
+                        0,
+                        ',',
+                        '.',
+                    ) }})
+                    + Rawat Inap
+                    ({{ number_format(
+                        $data_pasien[0]['TotalBiayaDokterRanap'] + $data_pasien[0]['TotalBiayaDokterPerawatRanap'],
+                        0,
+                        ',',
+                        '.',
+                    ) }})
+                </font>
             </td>
         </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>PARACETAMOL 500MG TAB@100 3x1 Sesudah makan
-                    (demam/nyeri)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>400
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>9.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>3,600
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>VECTRINE DRY SYRUP&nbsp;&nbsp;3x1 sendok,
-                    setelah makan (batuk)
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>90,200
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>90,200
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>VECTRINE DRY SYRUP&nbsp;&nbsp;3x1 sdk obat (
-                    Sesudah makan) batuk
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>90,200
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>1.0
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>0
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>90,200
-            </td>
-        </tr>
+
         <tr class='isi12' padding='0'>
             <td padding='0' width='18%'>
                 <font color='111111' size='1' face='Tahoma'>
             </td>
             <td padding='0' width='40%' colspan='6' align='right'>
-                <font color='111111' size='1' face='Tahoma'>Total Resep Pulang : 362,800
+                <font color='111111' size='1' face='Tahoma'>Total Kunjungan :
+                    {{ number_format($data_pasien[0]['TotalBiayaVisite'], 0, ',', '.') }}
             </td>
         </tr>
+
+        <tr class='isi12' padding='0'>
+            <td padding='0' width='18%'>
+                <font color='111111' size='1' face='Tahoma'>10. Pemeriksaan Dokter Rawat Jalan
+            </td>
+            <td padding='0' width='40%'>
+                <font color='111111' size='1' face='Tahoma'>:
+            </td>
+            <td padding='0' width='2%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='5%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='15%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+        </tr>
+        @foreach ($data_pasien[0]['PemeriksaanDokterRalan'] as $konsultasi)
+            <tr class='isi12'>
+                <td width='18%'>
+                    <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
+                </td>
+                <td width='40%'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - (
+                        {{ $konsultasi['dokter'] }} )</font>
+                </td>
+                <td width='2%'>
+                    <font color='111111' size='1' face='Tahoma'>:</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['biaya'], 0, ',', '.') }}</font>
+                </td>
+                <td width='5%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['jumlah'] }}</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>0</font>
+                </td>
+                <td width='15%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['totalBiaya'], 0, ',', '.') }}</font>
+                </td>
+            </tr>
+        @endforeach
+
+        <tr class='isi12' padding='0'>
+            <td padding='0' width='18%'>
+                <font color='111111' size='1' face='Tahoma'>11. Pemeriksaan Perawat Rawat Jalan
+            </td>
+            <td padding='0' width='40%'>
+                <font color='111111' size='1' face='Tahoma'>:
+            </td>
+            <td padding='0' width='2%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='5%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='15%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+        </tr>
+        @foreach ($data_pasien[0]['PemeriksaanPerawatRalan'] as $konsultasi)
+            <tr class='isi12'>
+                <td width='18%'>
+                    <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
+                </td>
+                <td width='40%'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - (
+                        {{ $konsultasi['dokter'] }} )</font>
+                </td>
+                <td width='2%'>
+                    <font color='111111' size='1' face='Tahoma'>:</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['biaya'], 0, ',', '.') }}</font>
+                </td>
+                <td width='5%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['jumlah'] }}</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>0</font>
+                </td>
+                <td width='15%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['totalBiaya'], 0, ',', '.') }}</font>
+                </td>
+            </tr>
+        @endforeach
+
+        <tr class='isi12' padding='0'>
+            <td padding='0' width='18%'>
+                <font color='111111' size='1' face='Tahoma'>12. Pemeriksaan Dokter Perawat Rawat Jalan
+            </td>
+            <td padding='0' width='40%'>
+                <font color='111111' size='1' face='Tahoma'>:
+            </td>
+            <td padding='0' width='2%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='5%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='15%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+        </tr>
+        @foreach ($data_pasien[0]['PemeriksaanDokterPerawatRalan'] as $konsultasi)
+            <tr class='isi12'>
+                <td width='18%'>
+                    <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
+                </td>
+                <td width='40%'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - (
+                        {{ $konsultasi['dokter'] }} )</font>
+                </td>
+                <td width='2%'>
+                    <font color='111111' size='1' face='Tahoma'>:</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['biaya'], 0, ',', '.') }}</font>
+                </td>
+                <td width='5%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['jumlah'] }}</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>0</font>
+                </td>
+                <td width='15%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['totalBiaya'], 0, ',', '.') }}</font>
+                </td>
+            </tr>
+        @endforeach
+
+        <tr class='isi12' padding='0'>
+            <td padding='0' width='18%'>
+                <font color='111111' size='1' face='Tahoma'>13. Pemeriksaan Dokter Rawat Inap
+            </td>
+            <td padding='0' width='40%'>
+                <font color='111111' size='1' face='Tahoma'>:
+            </td>
+            <td padding='0' width='2%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='5%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='15%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+        </tr>
+        @foreach ($data_pasien[0]['PemeriksaanDokterRanap'] as $konsultasi)
+            <tr class='isi12'>
+                <td width='18%'>
+                    <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
+                </td>
+                <td width='40%'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - (
+                        {{ $konsultasi['dokter'] }} )</font>
+                </td>
+                <td width='2%'>
+                    <font color='111111' size='1' face='Tahoma'>:</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['biaya'], 0, ',', '.') }}</font>
+                </td>
+                <td width='5%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['jumlah'] }}</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>0</font>
+                </td>
+                <td width='15%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['totalBiaya'], 0, ',', '.') }}</font>
+                </td>
+            </tr>
+        @endforeach
+
+
+        <tr class='isi12' padding='0'>
+            <td padding='0' width='18%'>
+                <font color='111111' size='1' face='Tahoma'>14. Pemeriksaan Perawat Rawat Inap
+            </td>
+            <td padding='0' width='40%'>
+                <font color='111111' size='1' face='Tahoma'>:
+            </td>
+            <td padding='0' width='2%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='5%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='15%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+        </tr>
+        @foreach ($data_pasien[0]['PemeriksaanPerawatRanap'] as $konsultasi)
+            <tr class='isi12'>
+                <td width='18%'>
+                    <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
+                </td>
+                <td width='40%'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - (
+                        {{ $konsultasi['dokter'] }} )</font>
+                </td>
+                <td width='2%'>
+                    <font color='111111' size='1' face='Tahoma'>:</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['biaya'], 0, ',', '.') }}</font>
+                </td>
+                <td width='5%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['jumlah'] }}</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>0</font>
+                </td>
+                <td width='15%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['totalBiaya'], 0, ',', '.') }}</font>
+                </td>
+            </tr>
+        @endforeach
+
+        <tr class='isi12' padding='0'>
+            <td padding='0' width='18%'>
+                <font color='111111' size='1' face='Tahoma'>15. Pemeriksaan Dokter Perawat Rawat Inap
+            </td>
+            <td padding='0' width='40%'>
+                <font color='111111' size='1' face='Tahoma'>:
+            </td>
+            <td padding='0' width='2%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='5%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='15%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+        </tr>
+        @foreach ($data_pasien[0]['PemeriksaanDokterPerawatRanap'] as $konsultasi)
+            <tr class='isi12'>
+                <td width='18%'>
+                    <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
+                </td>
+                <td width='40%'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - (
+                        {{ $konsultasi['dokter'] }} )</font>
+                </td>
+                <td width='2%'>
+                    <font color='111111' size='1' face='Tahoma'>:</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['biaya'], 0, ',', '.') }}</font>
+                </td>
+                <td width='5%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['jumlah'] }}</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>0</font>
+                </td>
+                <td width='15%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['totalBiaya'], 0, ',', '.') }}</font>
+                </td>
+            </tr>
+        @endforeach
+
+        <tr class="isi12" style="padding:0;">
+            <td style="padding:0; width:18%;">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:40%;" colspan="6" align="right">
+                <font color="#111111" size="1" face="Tahoma">
+                    Rawat Jalan
+                    ({{ number_format($data_pasien[0]['totalPemeriksaanRalan'], 0, ',', '.') }}) + Rawat Inap
+                    ({{ number_format($data_pasien[0]['totalPemeriksaanRanap'], 0, ',', '.') }})
+                </font>
+            </td>
+        </tr>
+
         <tr class='isi12' padding='0'>
             <td padding='0' width='18%'>
                 <font color='111111' size='1' face='Tahoma'>
             </td>
             <td padding='0' width='40%' colspan='6' align='right'>
+                <font color='111111' size='1' face='Tahoma'>Total Pemeriksaan :
+                    {{ number_format($data_pasien[0]['totalPemeriksaan'], 0, ',', '.') }}
+            </td>
+        </tr>
+
+        <tr class='isi12' padding='0'>
+            <td padding='0' width='18%'>
+                <font color='111111' size='1' face='Tahoma'>16. Tindakan Dokter Rawat Jalan
+            </td>
+            <td padding='0' width='40%'>
+                <font color='111111' size='1' face='Tahoma'>:
+            </td>
+            <td padding='0' width='2%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='5%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='15%' align='right'>
                 <font color='111111' size='1' face='Tahoma'>
             </td>
         </tr>
+        @foreach ($data_pasien[0]['tindakanDokterRanap'] as $konsultasi)
+            <tr class='isi12'>
+                <td width='18%'>
+                    <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
+                </td>
+                <td width='40%'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - (
+                        {{ $konsultasi['dokter'] }} )</font>
+                </td>
+                <td width='2%'>
+                    <font color='111111' size='1' face='Tahoma'>:</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['biaya'], 0, ',', '.') }}</font>
+                </td>
+                <td width='5%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['jumlah'] }}</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>0</font>
+                </td>
+                <td width='15%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['totalBiaya'], 0, ',', '.') }}</font>
+                </td>
+            </tr>
+        @endforeach
+
+
+        <tr class='isi12' padding='0'>
+            <td padding='0' width='18%'>
+                <font color='111111' size='1' face='Tahoma'>17. Tindakan Perawat Rawat Jalan
+            </td>
+            <td padding='0' width='40%'>
+                <font color='111111' size='1' face='Tahoma'>:
+            </td>
+            <td padding='0' width='2%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='5%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='15%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+        </tr>
+        @foreach ($data_pasien[0]['tindakanPerawatRalan'] as $konsultasi)
+            <tr class='isi12'>
+                <td width='18%'>
+                    <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
+                </td>
+                <td width='40%'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - (
+                        {{ $konsultasi['dokter'] }} )</font>
+                </td>
+                <td width='2%'>
+                    <font color='111111' size='1' face='Tahoma'>:</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['biaya'], 0, ',', '.') }}</font>
+                </td>
+                <td width='5%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['jumlah'] }}</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>0</font>
+                </td>
+                <td width='15%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['totalBiaya'], 0, ',', '.') }}</font>
+                </td>
+            </tr>
+        @endforeach
+
+
+        <tr class='isi12' padding='0'>
+            <td padding='0' width='18%'>
+                <font color='111111' size='1' face='Tahoma'>18. Tindakan Dokter Perawat Rawat Jalan
+            </td>
+            <td padding='0' width='40%'>
+                <font color='111111' size='1' face='Tahoma'>:
+            </td>
+            <td padding='0' width='2%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='5%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='15%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+        </tr>
+        @foreach ($data_pasien[0]['tindakanDokterPerawatRalan'] as $konsultasi)
+            <tr class='isi12'>
+                <td width='18%'>
+                    <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
+                </td>
+                <td width='40%'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - (
+                        {{ $konsultasi['dokter'] }} )</font>
+                </td>
+                <td width='2%'>
+                    <font color='111111' size='1' face='Tahoma'>:</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['biaya'], 0, ',', '.') }}</font>
+                </td>
+                <td width='5%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['jumlah'] }}</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>0</font>
+                </td>
+                <td width='15%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['totalBiaya'], 0, ',', '.') }}</font>
+                </td>
+            </tr>
+        @endforeach
+
+        <tr class='isi12' padding='0'>
+            <td padding='0' width='18%'>
+                <font color='111111' size='1' face='Tahoma'>19. Tindakan Dokter Rawat Inap
+            </td>
+            <td padding='0' width='40%'>
+                <font color='111111' size='1' face='Tahoma'>:
+            </td>
+            <td padding='0' width='2%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='5%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='15%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+        </tr>
+        @foreach ($data_pasien[0]['tindakanDokterRanap'] as $konsultasi)
+            <tr class='isi12'>
+                <td width='18%'>
+                    <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
+                </td>
+                <td width='40%'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - (
+                        {{ $konsultasi['dokter'] }} )</font>
+                </td>
+                <td width='2%'>
+                    <font color='111111' size='1' face='Tahoma'>:</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['biaya'], 0, ',', '.') }}</font>
+                </td>
+                <td width='5%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['jumlah'] }}</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>0</font>
+                </td>
+                <td width='15%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['totalBiaya'], 0, ',', '.') }}</font>
+                </td>
+            </tr>
+        @endforeach
+
+        <tr class='isi12' padding='0'>
+            <td padding='0' width='18%'>
+                <font color='111111' size='1' face='Tahoma'>20. Tindakan Perawat Rawat Inap
+            </td>
+            <td padding='0' width='40%'>
+                <font color='111111' size='1' face='Tahoma'>:
+            </td>
+            <td padding='0' width='2%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='5%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='15%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+        </tr>
+        @foreach ($data_pasien[0]['tindakanPerawatRanap'] as $konsultasi)
+            <tr class='isi12'>
+                <td width='18%'>
+                    <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
+                </td>
+                <td width='40%'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - (
+                        {{ $konsultasi['dokter'] }} )</font>
+                </td>
+                <td width='2%'>
+                    <font color='111111' size='1' face='Tahoma'>:</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['biaya'], 0, ',', '.') }}</font>
+                </td>
+                <td width='5%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['jumlah'] }}</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>0</font>
+                </td>
+                <td width='15%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['totalBiaya'], 0, ',', '.') }}</font>
+                </td>
+            </tr>
+        @endforeach
+
+        <tr class='isi12' padding='0'>
+            <td padding='0' width='18%'>
+                <font color='111111' size='1' face='Tahoma'>21. Tindakan Dokter Perawat Rawat Inap
+            </td>
+            <td padding='0' width='40%'>
+                <font color='111111' size='1' face='Tahoma'>:
+            </td>
+            <td padding='0' width='2%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='5%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='15%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+        </tr>
+        @foreach ($data_pasien[0]['tindakanDokterPerawatRanap'] as $konsultasi)
+            <tr class='isi12'>
+                <td width='18%'>
+                    <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
+                </td>
+                <td width='40%'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - (
+                        {{ $konsultasi['dokter'] }} )</font>
+                </td>
+                <td width='2%'>
+                    <font color='111111' size='1' face='Tahoma'>:</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['biaya'], 0, ',', '.') }}</font>
+                </td>
+                <td width='5%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['jumlah'] }}</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>0</font>
+                </td>
+                <td width='15%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['totalBiaya'], 0, ',', '.') }}</font>
+                </td>
+            </tr>
+        @endforeach
+
+        <tr class="isi12" style="padding:0;">
+            <td style="padding:0; width:18%;">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:40%;" colspan="6" align="right">
+                <font color="#111111" size="1" face="Tahoma">
+                    Rawat Jalan
+                    ({{ number_format($data_pasien[0]['totaltindakanRalan'], 0, ',', '.') }}) + Rawat Inap
+                    ({{ number_format($data_pasien[0]['totaltindakanRanap'], 0, ',', '.') }})
+                </font>
+            </td>
+        </tr>
+
+        <tr class='isi12' padding='0'>
+            <td padding='0' width='18%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='40%' colspan='6' align='right'>
+                <font color='111111' size='1' face='Tahoma'>Total Tindakan :
+                    {{ number_format($data_pasien[0]['totaltindakan'], 0, ',', '.') }}
+            </td>
+        </tr>
+
+        <tr class='isi12' padding='0'>
+            <td padding='0' width='18%'>
+                <font color='111111' size='1' face='Tahoma'>22. Perawatan Dokter Rawat Jalan
+            </td>
+            <td padding='0' width='40%'>
+                <font color='111111' size='1' face='Tahoma'>:
+            </td>
+            <td padding='0' width='2%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='5%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='15%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+        </tr>
+        @foreach ($data_pasien[0]['PerawatanDokterRalan'] as $konsultasi)
+            <tr class='isi12'>
+                <td width='18%'>
+                    <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
+                </td>
+                <td width='40%'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - (
+                        {{ $konsultasi['dokter'] }} )</font>
+                </td>
+                <td width='2%'>
+                    <font color='111111' size='1' face='Tahoma'>:</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['biaya'], 0, ',', '.') }}</font>
+                </td>
+                <td width='5%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['jumlah'] }}</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>0</font>
+                </td>
+                <td width='15%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['totalBiaya'], 0, ',', '.') }}</font>
+                </td>
+            </tr>
+        @endforeach
+
+        <tr class='isi12' padding='0'>
+            <td padding='0' width='18%'>
+                <font color='111111' size='1' face='Tahoma'>23. Perawatan Perawat Rawat Jalan
+            </td>
+            <td padding='0' width='40%'>
+                <font color='111111' size='1' face='Tahoma'>:
+            </td>
+            <td padding='0' width='2%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='5%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='15%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+        </tr>
+        @foreach ($data_pasien[0]['perawatanPerawatRalan'] as $konsultasi)
+            <tr class='isi12'>
+                <td width='18%'>
+                    <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
+                </td>
+                <td width='40%'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - (
+                        {{ $konsultasi['dokter'] }} )</font>
+                </td>
+                <td width='2%'>
+                    <font color='111111' size='1' face='Tahoma'>:</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['biaya'], 0, ',', '.') }}</font>
+                </td>
+                <td width='5%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['jumlah'] }}</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>0</font>
+                </td>
+                <td width='15%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['totalBiaya'], 0, ',', '.') }}</font>
+                </td>
+            </tr>
+        @endforeach
+
+        <tr class='isi12' padding='0'>
+            <td padding='0' width='18%'>
+                <font color='111111' size='1' face='Tahoma'>24. Perawatan Dokter Perawat Rawat Jalan
+            </td>
+            <td padding='0' width='40%'>
+                <font color='111111' size='1' face='Tahoma'>:
+            </td>
+            <td padding='0' width='2%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='5%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='15%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+        </tr>
+        @foreach ($data_pasien[0]['perawatanDokterPerawatRalan'] as $konsultasi)
+            <tr class='isi12'>
+                <td width='18%'>
+                    <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
+                </td>
+                <td width='40%'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - (
+                        {{ $konsultasi['dokter'] }} )</font>
+                </td>
+                <td width='2%'>
+                    <font color='111111' size='1' face='Tahoma'>:</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['biaya'], 0, ',', '.') }}</font>
+                </td>
+                <td width='5%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['jumlah'] }}</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>0</font>
+                </td>
+                <td width='15%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['totalBiaya'], 0, ',', '.') }}</font>
+                </td>
+            </tr>
+        @endforeach
+
+
+        <tr class='isi12' padding='0'>
+            <td padding='0' width='18%'>
+                <font color='111111' size='1' face='Tahoma'>25. Perawatan Dokter Rawat Inap
+            </td>
+            <td padding='0' width='40%'>
+                <font color='111111' size='1' face='Tahoma'>:
+            </td>
+            <td padding='0' width='2%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='5%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='15%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+        </tr>
+        @foreach ($data_pasien[0]['perawatanDokterRanap'] as $konsultasi)
+            <tr class='isi12'>
+                <td width='18%'>
+                    <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
+                </td>
+                <td width='40%'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - (
+                        {{ $konsultasi['dokter'] }} )</font>
+                </td>
+                <td width='2%'>
+                    <font color='111111' size='1' face='Tahoma'>:</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['biaya'], 0, ',', '.') }}</font>
+                </td>
+                <td width='5%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['jumlah'] }}</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>0</font>
+                </td>
+                <td width='15%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['totalBiaya'], 0, ',', '.') }}</font>
+                </td>
+            </tr>
+        @endforeach
+
+        <tr class='isi12' padding='0'>
+            <td padding='0' width='18%'>
+                <font color='111111' size='1' face='Tahoma'>26. Perawatan Perawat Rawat Inap
+            </td>
+            <td padding='0' width='40%'>
+                <font color='111111' size='1' face='Tahoma'>:
+            </td>
+            <td padding='0' width='2%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='5%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='15%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+        </tr>
+        @foreach ($data_pasien[0]['perawatanPerawatRanap'] as $konsultasi)
+            <tr class='isi12'>
+                <td width='18%'>
+                    <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
+                </td>
+                <td width='40%'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - (
+                        {{ $konsultasi['dokter'] }} )</font>
+                </td>
+                <td width='2%'>
+                    <font color='111111' size='1' face='Tahoma'>:</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['biaya'], 0, ',', '.') }}</font>
+                </td>
+                <td width='5%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['jumlah'] }}</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>0</font>
+                </td>
+                <td width='15%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['totalBiaya'], 0, ',', '.') }}</font>
+                </td>
+            </tr>
+        @endforeach
+
+        <tr class='isi12' padding='0'>
+            <td padding='0' width='18%'>
+                <font color='111111' size='1' face='Tahoma'>27. Perawatan Dokter Perawat Rawat Inap
+            </td>
+            <td padding='0' width='40%'>
+                <font color='111111' size='1' face='Tahoma'>:
+            </td>
+            <td padding='0' width='2%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='5%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='15%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+        </tr>
+        @foreach ($data_pasien[0]['perawatanDokterPerawatRanap'] as $konsultasi)
+            <tr class='isi12'>
+                <td width='18%'>
+                    <font color='111111' size='1' face='Tahoma'>&nbsp;</font>
+                </td>
+                <td width='40%'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['nama'] }} - (
+                        {{ $konsultasi['dokter'] }} )</font>
+                </td>
+                <td width='2%'>
+                    <font color='111111' size='1' face='Tahoma'>:</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['biaya'], 0, ',', '.') }}</font>
+                </td>
+                <td width='5%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>{{ $konsultasi['jumlah'] }}</font>
+                </td>
+                <td width='10%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>0</font>
+                </td>
+                <td width='15%' align='right'>
+                    <font color='111111' size='1' face='Tahoma'>
+                        {{ number_format($konsultasi['totalBiaya'], 0, ',', '.') }}</font>
+                </td>
+            </tr>
+        @endforeach
+
+        <tr class="isi12" style="padding:0;">
+            <td style="padding:0; width:18%;">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:40%;" colspan="6" align="right">
+                <font color="#111111" size="1" face="Tahoma">
+                    Rawat Jalan
+                    ({{ number_format($data_pasien[0]['totalperawatanRalan'], 0, ',', '.') }}) + Rawat Inap
+                    ({{ number_format($data_pasien[0]['totalperawatanRanap'], 0, ',', '.') }})
+                </font>
+            </td>
+        </tr>
+
+        <tr class='isi12' padding='0'>
+            <td padding='0' width='18%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='40%' colspan='6' align='right'>
+                <font color='111111' size='1' face='Tahoma'>Total Perawatan :
+                    {{ number_format($data_pasien[0]['totalperawatan'], 0, ',', '.') }}
+            </td>
+        </tr>
+
+        <!-- Header kategori Lab Rawat Jalan -->
+        <tr class="isi12" style="padding:0;">
+            <td style="padding:0; width:18%;">
+                <font color="#111111" size="1" face="Tahoma">28. Lab Rawat Jalan </font>
+            </td>
+            <td style="padding:0; width:40%;">
+                <font color="#111111" size="1" face="Tahoma">:</font>
+            </td>
+            <td style="padding:0; width:2%;">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:10%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:5%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:10%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:15%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+        </tr>
+
+        <!-- Jika ada data Lab Ralan (Rawat Jalan), tampilkan transaksi -->
+        @if (!empty($data_pasien[0]['Lab']['Ralan']) && count($data_pasien[0]['Lab']['Ralan']) > 0)
+            @foreach ($data_pasien[0]['Lab']['Ralan'] as $lab)
+                <tr class="isi12">
+                    <td width="18%">
+                        <font color="#111111" size="1" face="Tahoma">&nbsp;</font>
+                    </td>
+                    <td width="40%">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ $lab['Nama Pemeriksaan'] }}
+                        </font>
+                    </td>
+                    <td width="2%">
+                        <font color="#111111" size="1" face="Tahoma">:</font>
+                    </td>
+                    <td width="10%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ number_format($lab['Jumlah rujukan'] ? $lab['Biaya'] / $lab['Jumlah rujukan'] : 0, 0, ',', '.') }}
+
+                        </font>
+                    </td>
+                    <td width="5%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ $lab['Jumlah rujukan'] }}
+                        </font>
+                    </td>
+                    <td width="10%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">0</font>
+                    </td>
+                    <td width="15%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ number_format($lab['Biaya'], 0, ',', '.') }}
+                        </font>
+                    </td>
+                </tr>
+            @endforeach
+        @endif
+
+        <!-- Tampilkan rekap Detail Lab Rawat Jalan -->
+        @if (!empty($data_pasien[0]['DetailLab']['Ralan']) && count($data_pasien[0]['DetailLab']['Ralan']) > 0)
+            @foreach ($data_pasien[0]['DetailLab']['Ralan'] as $lab)
+                <tr class="isi12">
+                    <td width="18%">
+                        <font color="#111111" size="1" face="Tahoma">&nbsp;</font>
+                    </td>
+                    <td width="40%">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ $lab['nama'] }}
+                        </font>
+                    </td>
+                    <td width="2%">
+                        <font color="#111111" size="1" face="Tahoma">:</font>
+                    </td>
+                    <td width="10%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">0</font>
+                    </td>
+                    <td width="5%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ $lab['Jumlah rujukan'] }}
+                        </font>
+                    </td>
+                    <td width="10%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ number_format($lab['Biaya'], 0, ',', '.') }}
+                        </font>
+                    </td>
+                    <td width="15%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ number_format($lab['Biaya'], 0, ',', '.') }}
+                        </font>
+                    </td>
+                </tr>
+            @endforeach
+        @endif
+
+        <!-- Header kategori Lab Rawat Inap -->
+        <tr class="isi12" style="padding:0;">
+            <td style="padding:0; width:18%;">
+                <font color="#111111" size="1" face="Tahoma">29. Lab Rawat Inap </font>
+            </td>
+            <td style="padding:0; width:40%;">
+                <font color="#111111" size="1" face="Tahoma">:</font>
+            </td>
+            <td style="padding:0; width:2%;">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:10%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:5%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:10%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:15%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+        </tr>
+
+        <!-- Jika ada data Lab Ranap (Rawat Inap), tampilkan transaksi -->
+        @if (!empty($data_pasien[0]['Lab']['Ranap']) && count($data_pasien[0]['Lab']['Ranap']) > 0)
+            @foreach ($data_pasien[0]['Lab']['Ranap'] as $lab)
+                <tr class="isi12">
+                    <td width="18%">
+                        <font color="#111111" size="1" face="Tahoma">&nbsp;</font>
+                    </td>
+                    <td width="40%">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ $lab['Nama Pemeriksaan'] }}
+                        </font>
+                    </td>
+                    <td width="2%">
+                        <font color="#111111" size="1" face="Tahoma">:</font>
+                    </td>
+                    <td width="10%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ number_format($lab['Jumlah rujukan'] ? $lab['Biaya'] / $lab['Jumlah rujukan'] : 0, 0, ',', '.') }}
+
+                        </font>
+                    </td>
+                    <td width="5%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ $lab['Jumlah rujukan'] }}
+                        </font>
+                    </td>
+                    <td width="10%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">0</font>
+                    </td>
+                    <td width="15%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ number_format($lab['Biaya'], 0, ',', '.') }}
+                        </font>
+                    </td>
+                </tr>
+            @endforeach
+        @endif
+
+        <!-- Tampilkan rekap Detail Lab Rawat Inap -->
+        @if (!empty($data_pasien[0]['DetailLab']['Ranap']) && count($data_pasien[0]['DetailLab']['Ranap']) > 0)
+            @foreach ($data_pasien[0]['DetailLab']['Ranap'] as $lab)
+                <tr class="isi12">
+                    <td width="18%">
+                        <font color="#111111" size="1" face="Tahoma">&nbsp;</font>
+                    </td>
+                    <td width="40%">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ $lab['nama'] }}
+                        </font>
+                    </td>
+                    <td width="2%">
+                        <font color="#111111" size="1" face="Tahoma">:</font>
+                    </td>
+                    <td width="10%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">0</font>
+                    </td>
+                    <td width="5%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ $lab['Jumlah rujukan'] }}
+                        </font>
+                    </td>
+                    <td width="10%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ number_format($lab['Biaya'], 0, ',', '.') }}
+                        </font>
+                    </td>
+                    <td width="15%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ number_format($lab['Biaya'], 0, ',', '.') }}
+                        </font>
+                    </td>
+                </tr>
+            @endforeach
+        @endif
+
+        <tr class="isi12" style="padding:0;">
+            <td style="padding:0; width:18%;">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:40%;" colspan="6" align="right">
+                <font color="#111111" size="1" face="Tahoma">
+                    Rawat Jalan
+                    ({{ number_format($data_pasien[0]['TotalLabRalan'] + $data_pasien[0]['TotalDetailLabRalan'], 0, ',', '.') }})
+                    + Rawat Inap
+                    ({{ number_format($data_pasien[0]['TotalLabRanap'] + $data_pasien[0]['TotalDetailLabRanap'], 0, ',', '.') }})
+                </font>
+            </td>
+        </tr>
+
+        <tr class='isi12' padding='0'>
+            <td padding='0' width='18%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='40%' colspan='6' align='right'>
+                <font color='111111' size='1' face='Tahoma'>Total Perawatan :
+                    {{ number_format($data_pasien[0]['TotalSemuaLab'], 0, ',', '.') }}
+            </td>
+        </tr>
+
+        <tr class="isi12" style="padding:0;">
+            <td style="padding:0; width:18%;">
+                <font color="#111111" size="1" face="Tahoma">30. Radiologi Rawat Jalan </font>
+            </td>
+            <td style="padding:0; width:40%;">
+                <font color="#111111" size="1" face="Tahoma">:</font>
+            </td>
+            <td style="padding:0; width:2%;">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:10%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:5%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:10%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:15%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+        </tr>
+
+        <!-- Tampilkan rekap Detail Lab Rawat Inap -->
+        @if (!empty($data_pasien[0]['Radiologi']['Ralan']) && count($data_pasien[0]['Radiologi']['Ralan']) > 0)
+            @foreach ($data_pasien[0]['Radiologi']['Ralan'] as $lab)
+                <tr class="isi12">
+                    <td width="18%">
+                        <font color="#111111" size="1" face="Tahoma">&nbsp;</font>
+                    </td>
+                    <td width="40%">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ $lab['Nama pemeriksaan'] }}
+                        </font>
+                    </td>
+                    <td width="2%">
+                        <font color="#111111" size="1" face="Tahoma">:</font>
+                    </td>
+                    <td width="5%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ number_format($lab['Biaya Pemeriksaan'], 0, ',', '.') }}
+                        </font>
+                    </td>
+                    <td width="10%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ number_format($lab['Jumlah'], 0, ',', '.') }}
+                        </font>
+                    </td>
+                    <td width="10%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">0</font>
+                    </td>
+                    <td width="15%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ number_format($lab['Total Biaya'], 0, ',', '.') }}
+                        </font>
+                    </td>
+                </tr>
+            @endforeach
+        @endif
+
+        <tr class="isi12" style="padding:0;">
+            <td style="padding:0; width:18%;">
+                <font color="#111111" size="1" face="Tahoma">31. Radiologi Rawat Inap </font>
+            </td>
+            <td style="padding:0; width:40%;">
+                <font color="#111111" size="1" face="Tahoma">:</font>
+            </td>
+            <td style="padding:0; width:2%;">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:10%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:5%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:10%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:15%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+        </tr>
+
+        <!-- Tampilkan rekap Detail Lab Rawat Inap -->
+        @if (!empty($data_pasien[0]['Radiologi']['Ranap']) && count($data_pasien[0]['Radiologi']['Ranap']) > 0)
+            @foreach ($data_pasien[0]['Radiologi']['Ranap'] as $lab)
+                <tr class="isi12">
+                    <td width="18%">
+                        <font color="#111111" size="1" face="Tahoma">&nbsp;</font>
+                    </td>
+                    <td width="40%">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ $lab['Nama pemeriksaan'] }}
+                        </font>
+                    </td>
+                    <td width="2%">
+                        <font color="#111111" size="1" face="Tahoma">:</font>
+                    </td>
+                    <td width="5%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ number_format($lab['Biaya Pemeriksaan'], 0, ',', '.') }}
+                        </font>
+                    </td>
+                    <td width="10%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ number_format($lab['Jumlah'], 0, ',', '.') }}
+                        </font>
+                    </td>
+                    <td width="10%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">0</font>
+                    </td>
+                    <td width="15%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ number_format($lab['Total Biaya'], 0, ',', '.') }}
+                        </font>
+                    </td>
+                </tr>
+            @endforeach
+        @endif
+
+
+        <tr class="isi12" style="padding:0;">
+            <td style="padding:0; width:18%;">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:40%;" colspan="6" align="right">
+                <font color="#111111" size="1" face="Tahoma">
+                    Rawat Jalan
+                    ({{ number_format($data_pasien[0]['TotalRadiologiRalan'], 0, ',', '.') }})
+                    + Rawat Inap
+                    ({{ number_format($data_pasien[0]['TotalRadiologiRanap'], 0, ',', '.') }})
+                </font>
+            </td>
+        </tr>
+
+        <tr class='isi12' padding='0'>
+            <td padding='0' width='18%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='40%' colspan='6' align='right'>
+                <font color='111111' size='1' face='Tahoma'>Total Radiologi :
+                    {{ number_format($data_pasien[0]['TotalRadiologi'], 0, ',', '.') }}
+            </td>
+        </tr>
+
+        <tr class="isi12" style="padding:0;">
+            <td style="padding:0; width:18%;">
+                <font color="#111111" size="1" face="Tahoma">32. Operasi Rawat Jalan </font>
+            </td>
+            <td style="padding:0; width:40%;">
+                <font color="#111111" size="1" face="Tahoma">:</font>
+            </td>
+            <td style="padding:0; width:2%;">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:10%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:5%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:10%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:15%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+        </tr>
+
+        @foreach ($data_pasien[0]['Operasi']['Ralan'] as $lab)
+            <tr class="isi12">
+                <td width="18%">
+                    <font color="#111111" size="1" face="Tahoma">&nbsp;</font>
+                </td>
+                <td width="40%">
+                    <font color="#111111" size="1" face="Tahoma">
+                        {{ $lab['Nama Operasi'] }}
+                    </font>
+                </td>
+                <td width="2%">
+                    <font color="#111111" size="1" face="Tahoma">:</font>
+                </td>
+                <td width="10%" align="right">
+                    <font color="#111111" size="1" face="Tahoma">0</font>
+                </td>
+                <td width="5%" align="right">
+                    <font color="#111111" size="1" face="Tahoma">
+                        {{ number_format($lab['Biaya Operasi'], 0, ',', '.') }}
+                    </font>
+                </td>
+                <td width="10%" align="right">
+                    <font color="#111111" size="1" face="Tahoma">
+                        {{ number_format($lab['Jumlah'], 0, ',', '.') }}
+                    </font>
+                </td>
+                <td width="15%" align="right">
+                    <font color="#111111" size="1" face="Tahoma">
+                        {{ number_format($lab['Total Biaya'], 0, ',', '.') }}
+                    </font>
+                </td>
+            </tr>
+        @endforeach
+
+
+        <tr class="isi12" style="padding:0;">
+            <td style="padding:0; width:18%;">
+                <font color="#111111" size="1" face="Tahoma">33. Operasi Rawat Inap </font>
+            </td>
+            <td style="padding:0; width:40%;">
+                <font color="#111111" size="1" face="Tahoma">:</font>
+            </td>
+            <td style="padding:0; width:2%;">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:10%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:5%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:10%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:15%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+        </tr>
+
+        <!-- Tampilkan rekap Detail Lab Rawat Inap -->
+        @if (!empty($data_pasien[0]['Operasi']['Ranap']) && count($data_pasien[0]['Operasi']['Ranap']) > 0)
+            @foreach ($data_pasien[0]['Operasi']['Ranap'] as $lab)
+                <tr class="isi12">
+                    <td width="18%">
+                        <font color="#111111" size="1" face="Tahoma">&nbsp;</font>
+                    </td>
+                    <td width="40%">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ $lab['Nama Operasi'] }}
+                        </font>
+                    </td>
+                    <td width="2%">
+                        <font color="#111111" size="1" face="Tahoma">:</font>
+                    </td>
+                    <td width="5%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ number_format($lab['Biaya Operasi'], 0, ',', '.') }}
+                        </font>
+                    </td>
+                    <td width="10%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ number_format($lab['Jumlah'], 0, ',', '.') }}
+                        </font>
+                    </td>
+                    <td width="10%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">0</font>
+                    </td>
+                    <td width="15%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ number_format($lab['Total Biaya'], 0, ',', '.') }}
+                        </font>
+                    </td>
+                </tr>
+            @endforeach
+        @endif
+
+        <tr class="isi12" style="padding:0;">
+            <td style="padding:0; width:18%;">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:40%;" colspan="6" align="right">
+                <font color="#111111" size="1" face="Tahoma">
+                    Rawat Jalan
+                    ({{ number_format($data_pasien[0]['TotalOperasiRalan'], 0, ',', '.') }})
+                    + Rawat Inap
+                    ({{ number_format($data_pasien[0]['TotalOperasiRanap'], 0, ',', '.') }})
+                </font>
+            </td>
+        </tr>
+
+        <tr class='isi12' padding='0'>
+            <td padding='0' width='18%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='40%' colspan='6' align='right'>
+                <font color='111111' size='1' face='Tahoma'>Total Operasi :
+                    {{ number_format($data_pasien[0]['TotalOperasi'], 0, ',', '.') }}
+            </td>
+        </tr>
+
+
+        <tr class="isi12" style="padding:0;">
+            <td style="padding:0; width:18%;">
+                <font color="#111111" size="1" face="Tahoma">34. Obat Rawat Jalan </font>
+            </td>
+            <td style="padding:0; width:40%;">
+                <font color="#111111" size="1" face="Tahoma">:</font>
+            </td>
+            <td style="padding:0; width:2%;">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:10%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:5%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:10%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:15%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+        </tr>
+
+        @foreach ($data_pasien[0]['Obat']['Ralan'] as $lab)
+            <tr class="isi12">
+                <td width="18%">
+                    <font color="#111111" size="1" face="Tahoma">&nbsp;</font>
+                </td>
+                <td width="40%">
+                    <font color="#111111" size="1" face="Tahoma">
+                        {{ $lab['Nama obat'] }}
+                    </font>
+                </td>
+                <td width="2%">
+                    <font color="#111111" size="1" face="Tahoma">:</font>
+                </td>
+                <td width="5%" align="right">
+                    <font color="#111111" size="1" face="Tahoma">
+                        {{ number_format($lab['Harga Asli'], 0, ',', '.') }}
+                    </font>
+                </td>
+                <td width="10%" align="right">
+                    <font color="#111111" size="1" face="Tahoma">
+                        {{ number_format($lab['Jumlah'], 0, ',', '.') }}
+                    </font>
+                </td>
+                <td width="10%" align="right">
+                    <font color="#111111" size="1" face="Tahoma">0</font>
+                </td>
+                <td width="15%" align="right">
+                    <font color="#111111" size="1" face="Tahoma">
+                        {{ number_format($lab['Harga'], 0, ',', '.') }}
+                    </font>
+                </td>
+            </tr>
+        @endforeach
+
+
+        <tr class="isi12" style="padding:0;">
+            <td style="padding:0; width:18%;">
+                <font color="#111111" size="1" face="Tahoma">35. Obat Rawat Inap </font>
+            </td>
+            <td style="padding:0; width:40%;">
+                <font color="#111111" size="1" face="Tahoma">:</font>
+            </td>
+            <td style="padding:0; width:2%;">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:10%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:5%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:10%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:15%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+        </tr>
+
+        <!-- Tampilkan rekap Detail Lab Rawat Inap -->
+        @if (!empty($data_pasien[0]['Obat']['Ranap']) && count($data_pasien[0]['Obat']['Ranap']) > 0)
+            @foreach ($data_pasien[0]['Obat']['Ranap'] as $lab)
+                <tr class="isi12">
+                    <td width="18%">
+                        <font color="#111111" size="1" face="Tahoma">&nbsp;</font>
+                    </td>
+                    <td width="40%">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ $lab['Nama obat'] }}
+                        </font>
+                    </td>
+                    <td width="2%">
+                        <font color="#111111" size="1" face="Tahoma">:</font>
+                    </td>
+                    <td width="5%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ number_format($lab['Harga Asli'], 0, ',', '.') }}
+                        </font>
+                    </td>
+                    <td width="10%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ number_format($lab['Jumlah'], 0, ',', '.') }}
+                        </font>
+                    </td>
+                    <td width="10%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">0</font>
+                    </td>
+                    <td width="15%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ number_format($lab['Harga'], 0, ',', '.') }}
+                        </font>
+                    </td>
+                </tr>
+            @endforeach
+        @endif
+
+        <tr class="isi12" style="padding:0;">
+            <td style="padding:0; width:18%;">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:40%;" colspan="6" align="right">
+                <font color="#111111" size="1" face="Tahoma">
+                    Rawat Jalan
+                    ({{ number_format($data_pasien[0]['TotalobatRalan'], 0, ',', '.') }})
+                    + Rawat Inap
+                    ({{ number_format($data_pasien[0]['TotalobatRanap'], 0, ',', '.') }})
+                </font>
+            </td>
+        </tr>
+
+        <tr class='isi12' padding='0'>
+            <td padding='0' width='18%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='40%' colspan='6' align='right'>
+                <font color='111111' size='1' face='Tahoma'>Total Obat :
+                    {{ number_format($data_pasien[0]['Totalobat'], 0, ',', '.') }}
+            </td>
+        </tr>
+
+
+        <tr class="isi12" style="padding:0;">
+            <td style="padding:0; width:18%;">
+                <font color="#111111" size="1" face="Tahoma">36. Resep Pulang </font>
+            </td>
+            <td style="padding:0; width:40%;">
+                <font color="#111111" size="1" face="Tahoma">:</font>
+            </td>
+            <td style="padding:0; width:2%;">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:10%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:5%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:10%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+            <td style="padding:0; width:15%;" align="right">
+                <font color="#111111" size="1" face="Tahoma"></font>
+            </td>
+        </tr>
+
+        <!-- Tampilkan rekap Detail Lab Rawat Inap -->
+        @if (!empty($data_pasien[0]['ResepPulang']) && count($data_pasien[0]['ResepPulang']) > 0)
+            @foreach ($data_pasien[0]['ResepPulang'] as $lab)
+                <tr class="isi12">
+                    <td width="18%">
+                        <font color="#111111" size="1" face="Tahoma">&nbsp;</font>
+                    </td>
+                    <td width="40%">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ $lab['Nama'] }}
+                        </font>
+                    </td>
+                    <td width="2%">
+                        <font color="#111111" size="1" face="Tahoma">:</font>
+                    </td>
+                    <td width="5%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ number_format($lab['harga awal'], 0, ',', '.') }}
+                        </font>
+                    </td>
+                    <td width="10%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ number_format($lab['Jumlah'], 0, ',', '.') }}
+                        </font>
+                    </td>
+                    <td width="10%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">0</font>
+                    </td>
+                    <td width="15%" align="right">
+                        <font color="#111111" size="1" face="Tahoma">
+                            {{ number_format($lab['harga'], 0, ',', '.') }}
+                        </font>
+                    </td>
+                </tr>
+            @endforeach
+        @endif
+
+        <tr class='isi12' padding='0'>
+            <td padding='0' width='18%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='40%' colspan='6' align='right'>
+                <font color='111111' size='1' face='Tahoma'>Total Resep Pulang (Rawat Inap) :
+                    {{ number_format($data_pasien[0]['totalresepPulang'], 0, ',', '.') }}
+            </td>
+        </tr>
+
+        <tr class='isi12' padding='0'>
+            <td padding='0' width='18%'>
+                <font color='111111' size='1' face='Tahoma'>TOTAL TAGIHAN RAWAT JALAN
+            </td>
+            <td padding='0' width='40%'>
+                <font color='111111' size='1' face='Tahoma'>:
+            </td>
+            <td padding='0' width='2%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='5%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='15%' align='right'>
+                <font color='111111' size='1' face='Tahoma'><b>
+                        {{ number_format($data_pasien[0]['totalRalan'], 0, ',', '.') }}</b>
+            </td>
+        </tr>
+
+        <tr class='isi12' padding='0'>
+            <td padding='0' width='18%'>
+                <font color='111111' size='1' face='Tahoma'>TOTAL TAGIHAN RAWAT INAP
+            </td>
+            <td padding='0' width='40%'>
+                <font color='111111' size='1' face='Tahoma'>:
+            </td>
+            <td padding='0' width='2%'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='5%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='10%' align='right'>
+                <font color='111111' size='1' face='Tahoma'>
+            </td>
+            <td padding='0' width='15%' align='right'>
+                <font color='111111' size='1' face='Tahoma'><b>
+                        {{ number_format($data_pasien[0]['totalRanap'], 0, ',', '.') }}</b>
+            </td>
+        </tr>
+
         <tr class='isi12' padding='0'>
             <td padding='0' width='18%'>
                 <font color='111111' size='1' face='Tahoma'>TOTAL TAGIHAN
@@ -2155,195 +2576,26 @@
                 <font color='111111' size='1' face='Tahoma'>
             </td>
             <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'><b>5,397,100</b>
+                <font color='111111' size='1' face='Tahoma'><b>
+                        {{ number_format($data_pasien[0]['totalSemua'], 0, ',', '.') }}</b>
             </td>
         </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>PPN
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'><b>0</b>
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>TAGIHAN+PPN
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'><b>5,397,100</b>
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>
-            </td>
-            <td padding='0' width='40%' colspan='6' align='right'>
-                <font color='111111' size='1' face='Tahoma'>
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>DEPOSIT
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'><b>0</b>
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>BAYAR
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'><b>0</b>
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td padding='0' width='18%'>
-                <font color='111111' size='1' face='Tahoma'>KEMBALI
-            </td>
-            <td padding='0' width='40%'>
-                <font color='111111' size='1' face='Tahoma'>:
-            </td>
-            <td padding='0' width='2%'>
-                <font color='111111' size='1' face='Tahoma'>
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>
-            </td>
-            <td padding='0' width='5%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>
-            </td>
-            <td padding='0' width='10%' align='right'>
-                <font color='111111' size='1' face='Tahoma'>
-            </td>
-            <td padding='0' width='15%' align='right'>
-                <font color='111111' size='1' face='Tahoma'><b>-5,397,100</b>
-            </td>
-        </tr>
-        <tr class='isi12' padding='0'>
-            <td colspan='7' padding='0'>
-                <table width='100%' bgcolor='#ffffff' align='left' border='0' padding='0'
-                    cellspacing='0' cellpadding='0'>
-                    <tr class='isi12' padding='0'>
-                        <td padding='0' width='40%' align=center>
-                            <font color='000000' size='1' face='Tahoma'>&nbsp;
-                        </td>
-                        <td padding='0' width='20%' align=center>
-                            <font color='000000' size='1' face='Tahoma'>&nbsp;
-                        </td>
-                        <td padding='0' width='40%' align='center'>
-                            <font color='000000' size='1' face='Tahoma'>&nbsp;</font>
-                        </td>
-                    </tr>
-                    <tr class='isi12' padding='0'>
-                        <td padding='0' width='40%' align=center>
-                            <font color='000000' size='1' face='Tahoma'>Mengetahui,<br>a/n Direktur
-                        </td>
-                        <td padding='0' width='20%' align=center>
-                            <font color='000000' size='1' face='Tahoma'>&nbsp;
-                        </td>
-                        <td padding='0' width='40%' align='center'>
-                            <font color='000000' size='1' face='Tahoma'>Pemangkat, 13-02-2025 132412</font>
-                        </td>
-                    </tr>
-                    <tr class='isi12' padding='0'>
-                        <td padding='0' width='40%' align=center>
-                            <font color='000000' size='1' face='Tahoma'>Kabid Umum & Keuangan
-                        </td>
-                        <td padding='0' width='20%' align=center>
-                            <font color='000000' size='1' face='Tahoma'>&nbsp;
-                        </td>
-                        <td padding='0' width='40%' align='center'>
-                            <font color='000000' size='1' face='Tahoma'>Kasir</font>
-                        </td>
-                    </tr>
-                    <tr class='isi12' padding='0'>
-                        <td padding='0' width='40%' align=center>
-                            <font color='000000' size='1' face='Tahoma'>( ............................. )
-                        </td>
-                        <td padding='0' width='20%' align=center>
-                            <font color='000000' size='1' face='Tahoma'>&nbsp;
-                        </td>
-                        <td padding='0' width='40%' align='center'>
-                            <font color='000000' size='1' face='Tahoma'><img width='50'
-                                    height='50' src='temp/Paguh.png' /><br>( Paguh )</font>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
+
         <tr class='isi12' padding='0'>
             <td colspan='7' padding='0'>&nbsp</td>
         </tr>
         <tr class='isi12' padding='0'>
             <td colspan='7' padding='0'>
-                <font color='000000' size='1' face='Tahoma'>NB : Mohon maaf apabila ada tagihan yang belum
-                    tertagihkan dalam perincian ini akan ditagihkan kemudian, dan apabila berlebih akan dikembalikan.
+                <font color="000000" size="1" face="Tahoma">
+                    Copyright © <span id="year"></span> TIM IT RSUD PMK
                 </font>
             </td>
         </tr>
     </table>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
 
 </body>
 

@@ -218,84 +218,51 @@ class LaporanBillingController extends Controller
         // $radiologi = $pasien->periksaRadiologi;
         $radiologi = $pasien->periksaRadiologi && !$pasien->periksaRadiologi->isEmpty()
             ? [
-                'Ralan' => $pasien->periksaRadiologi->where('status', 'Ralan')->map(function ($periksaRadiologi) {
-                    return [
-                        'Nama periksaRadiologi' => $periksaRadiologi->jnsPerawatan->nm_perawatan ?? '-',
-                        'Harga' => $periksaRadiologi->biaya ?? '-',
-                    ];
-                })->values(),
-                'total_harga_ralan' => $pasien->periksaRadiologi->where('status', 'Ralan')->sum(function ($periksaRadiologi) {
-                    return $periksaRadiologi->biaya ?? 0;
-                }),
-                'Ranap' => $pasien->periksaRadiologi->where('status', 'Ranap')->map(function ($periksaRadiologi) {
-                    return [
-                        'Nama periksaRadiologi' => $periksaRadiologi->jnsPerawatan->nm_perawatan ?? '-',
-                        'Harga' => $periksaRadiologi->biaya ?? '-',
-                    ];
-                })->values(),
-                'total_harga_ranap' => $pasien->periksaRadiologi->where('status', 'Ranap')->sum(function ($periksaRadiologi) {
-                    return $periksaRadiologi->biaya ?? 0;
-                }),
-                'total_harga' => $pasien->periksaRadiologi->sum(function ($periksaRadiologi) {
-                    return $periksaRadiologi->biaya ?? 0;
-                }),
+                'Ralan' => $pasien->periksaRadiologi->where('status', 'Ralan')
+                    ->groupBy('kd_jenis_prw')
+                    ->map(function ($group) {
+                        return [
+                            'Nama pemeriksaan' => $group->first()->jnsPerawatan->nm_perawatan ?? '-',
+                            'Kode pemeriksaan' => $group->first()->jnsPerawatan->kd_jenis_prw ?? '-',
+                            'Biaya Pemeriksaan' => $group->first()->jnsPerawatan->total_byr ?? '-',
+                            'Jumlah' => $group->count(),
+                            'Total Biaya' => $group->sum('biaya') ?? 0,
+                        ];
+                    })->values(),
+                'total_harga_ralan' => $pasien->periksaRadiologi->where('status', 'Ralan')->sum('biaya'),
+
+                'Ranap' => $pasien->periksaRadiologi->where('status', 'Ranap')
+                    ->groupBy('kd_jenis_prw')
+                    ->map(function ($group) {
+                        return [
+                            'Nama pemeriksaan' => $group->first()->jnsPerawatan->nm_perawatan ?? '-',
+                            'Kode pemeriksaan' => $group->first()->jnsPerawatan->kd_jenis_prw ?? '-',
+                            'Biaya Pemeriksaan' => $group->first()->jnsPerawatan->total_byr ?? '-',
+                            'Jumlah' => $group->count(),
+                            'Total Biaya' => $group->sum('biaya') ?? 0,
+                        ];
+                    })->values(),
+                'total_harga_ranap' => $pasien->periksaRadiologi->where('status', 'Ranap')->sum('biaya'),
+
+                'total_harga_semua' => $pasien->periksaRadiologi->sum('biaya'),
             ]
             : [
                 'Ralan' => collect([
                     [
-                        'Nama periksaRadiologi' => '-',
-                        'Harga' => 0,
+                        'Nama pemeriksaan' => '-',
+                        'Kode pemeriksaan' => '-',
+                        'Biaya Pemeriksaan' => 0,
+                        'Jumlah' => 0,
+                        'Total Biaya' => 0,
                     ],
                 ]),
                 'Ranap' => collect([
                     [
-                        'Nama periksaRadiologi' => '-',
-                        'Harga' => 0,
-                    ],
-                ]),
-                'total_harga' => 0,
-            ];
-
-        $totalradiologiRalan = collect($radiologi['Ralan'])->sum('Harga');
-        $totalradiologiRanap = collect($radiologi['Ranap'])->sum('Harga');
-        $totalradiologi = $totalradiologiRalan + $totalradiologiRanap;
-
-        // Operasi
-        $operasiStatus = $pasien->operasi && !$pasien->operasi->isEmpty()
-            ? [
-                'Ralan' => $pasien->operasi->where('status', 'Ralan')->map(function ($operasi) {
-                    return [
-                        'Nama Operasi' => $operasi->paket->nm_perawatan ?? '-',
-                        'Harga' => $operasi->paket->alat ?? '-',
-                    ];
-                })->values(),
-                'total_harga_ralan' => $pasien->operasi->where('status', 'Ralan')->sum(function ($operasi) {
-                    return $operasi->paket->alat ?? 0;
-                }),
-                'Ranap' => $pasien->operasi->where('status', 'Ranap')->map(function ($operasi) {
-                    return [
-                        'Nama Operasi' => $operasi->paket->nm_perawatan ?? '-',
-                        'Harga' => $operasi->paket->alat ?? '-',
-                    ];
-                })->values(),
-                'total_harga_ranap' => $pasien->operasi->where('status', 'Ranap')->sum(function ($operasi) {
-                    return $operasi->paket->alat ?? 0;
-                }),
-                'total_harga_semua' => $pasien->operasi->sum(function ($operasi) {
-                    return $operasi->paket->alat ?? 0;
-                }),
-            ]
-            : [
-                'Ralan' => collect([
-                    [
-                        'Nama Operasi' => '-',
-                        'Harga' => 0,
-                    ],
-                ]),
-                'Ranap' => collect([
-                    [
-                        'Nama Operasi' => '-',
-                        'Harga' => 0,
+                        'Nama pemeriksaan' => '-',
+                        'Kode pemeriksaan' => '-',
+                        'Biaya Pemeriksaan' => 0,
+                        'Jumlah' => 0,
+                        'Total Biaya' => 0,
                     ],
                 ]),
                 'total_harga_ralan' => 0,
@@ -303,8 +270,66 @@ class LaporanBillingController extends Controller
                 'total_harga_semua' => 0,
             ];
 
-        $totaloperasiStatusRalan = collect($operasiStatus['Ralan'])->sum('Harga');
-        $totaloperasiStatusRanap = collect($operasiStatus['Ranap'])->sum('Harga');
+
+        $totalradiologiRalan = collect($radiologi['Ralan'])->sum('Total Biaya');
+        $totalradiologiRanap = collect($radiologi['Ranap'])->sum('Total Biaya');
+        $totalradiologi = $totalradiologiRalan + $totalradiologiRanap;
+
+        // Operasi
+        $operasiStatus = $pasien->operasi && !$pasien->operasi->isEmpty()
+            ? [
+                'Ralan' => $pasien->operasi->where('status', 'Ralan')
+                    ->map(function ($operasi) {
+                        return [
+                            'Nama Operasi' => optional($operasi->paket)->nm_perawatan ?? '-',
+                            'Kode Operasi' => optional($operasi->paket)->kode_paket ?? '-',
+                            'Biaya Operasi' => optional($operasi->paket)->alat ?? 0,
+                            'Jumlah' => 1, // Jika ada jumlah, ganti dengan nilai yang benar
+                            'Total Biaya' => $operasi->biayaalat ?? 0, // Gunakan biaya dari operasi
+                        ];
+                    })->values(),
+                'total_harga_ralan' => $pasien->operasi->where('status', 'Ralan')->sum('biayaalat'), // Gunakan langsung
+
+                'Ranap' => $pasien->operasi->where('status', 'Ranap')
+                    ->map(function ($operasi) {
+                        return [
+                            'Nama Operasi' => optional($operasi->paket)->nm_perawatan ?? '-',
+                            'Kode Operasi' => optional($operasi->paket)->kode_paket ?? '-',
+                            'Biaya Operasi' => optional($operasi->paket)->alat ?? 0,
+                            'Jumlah' => 1,
+                            'Total Biaya' => $operasi->biayaalat ?? 0, // Gunakan biaya dari operasi
+                        ];
+                    })->values(),
+                'total_harga_ranap' => $pasien->operasi->where('status', 'Ranap')->sum('biayaalat'),
+
+                'total_harga_semua' => $pasien->operasi->sum('biayaalat'), // Gunakan langsung
+            ]
+            : [
+                'Ralan' => collect([
+                    [
+                        'Nama Operasi' => '-',
+                        'Kode Operasi' => '-',
+                        'Biaya Operasi' => 0,
+                        'Jumlah' => 0,
+                        'Total Biaya' => 0,
+                    ],
+                ]),
+                'Ranap' => collect([
+                    [
+                        'Nama Operasi' => '-',
+                        'Kode Operasi' => '-',
+                        'Biaya Operasi' => 0,
+                        'Jumlah' => 0,
+                        'Total Biaya' => 0,
+                    ],
+                ]),
+                'total_harga_ralan' => 0,
+                'total_harga_ranap' => 0,
+                'total_harga_semua' => 0,
+            ];
+
+        $totaloperasiStatusRalan = collect($operasiStatus['Ralan'])->sum('Total Biaya');
+        $totaloperasiStatusRanap = collect($operasiStatus['Ranap'])->sum('Total Biaya');
         $totaloperasiStatus = $totaloperasiStatusRalan + $totaloperasiStatusRanap;
 
         //Obat
@@ -316,7 +341,7 @@ class LaporanBillingController extends Controller
                         return [
                             'Nama obat' => $group->first()->barang->nama_brng ?? '-',
                             'kode obat' => $group->first()->barang->kode_brng ?? '-',
-                            'Harga Asli' => $group->first()->barang->ralan ?? '-',
+                            'Harga Asli' => $group->first()->barang->ralan ?? 0,
                             'Jumlah' => $group->sum('jml') ?? 0,
                             'Harga' => $group->sum('total') ?? 0,
                         ];
@@ -329,7 +354,7 @@ class LaporanBillingController extends Controller
                         return [
                             'Nama obat' => $group->first()->barang->nama_brng ?? '-',
                             'kode obat' => $group->first()->barang->kode_brng ?? '-',
-                            'Harga Asli' => $group->first()->barang->ralan ?? '-',
+                            'Harga Asli' => $group->first()->barang->ralan ?? 0,
                             'Jumlah' => $group->sum('jml') ?? 0,
                             'Harga' => $group->sum('total') ?? 0,
                         ];
@@ -342,7 +367,7 @@ class LaporanBillingController extends Controller
                 'Ralan' => collect([
                     [
                         'Nama obat' => '-',
-                        'Harga Asli' => '-',
+                        'Harga Asli' => 0,
                         'Jumlah' => 0,
                         'Harga' => 0,
                     ],
@@ -350,7 +375,7 @@ class LaporanBillingController extends Controller
                 'Ranap' => collect([
                     [
                         'Nama obat' => '-',
-                        'Harga Asli' => '-',
+                        'Harga Asli' => 0,
                         'Jumlah' => 0,
                         'Harga' => 0,
                     ],
@@ -377,7 +402,7 @@ class LaporanBillingController extends Controller
             : [
                 [
                     'Nama' => '-',
-                    'harga awal' => '-',
+                    'harga awal' => 0,
                     'Jumlah' => 0,
                     'harga' => 0,
                 ]
@@ -399,7 +424,7 @@ class LaporanBillingController extends Controller
             + $totalradiologiRalan
             + $totaloperasiStatusRalan
             + $totalobatRalan
-            + $totalresepPulang;
+            + $register;
 
         $totalRanap = $totalBiayaVisteRanap
             + $totalBiayaPemeriksaanRanap
@@ -409,10 +434,10 @@ class LaporanBillingController extends Controller
             + $totalDetailLabRanap
             + $totalradiologiRanap
             + $totaloperasiStatusRanap
-            + $totalobatRanap + $totalBiayaKamar;
+            + $totalobatRanap + $totalBiayaKamar
+            + $totalresepPulang;
 
-        $totalSemua = $totalRalan + $totalRanap + $register;
-
+        $totalSemua = $totalRalan + $totalRanap;
 
         $data_pasien[] = [
             'no_rawat' => $pasien->no_rawat,
@@ -423,24 +448,18 @@ class LaporanBillingController extends Controller
             'alamat' => $pasien->almt_pj ?? "tidak tahu",
             'dpjp' => $dokter_dpjp,
             'dokterIgd' => $dokter_igd,
-            'asalPermintaan' => $pasien->kd_poli,
+            'asalPermintaan' => $pasien->poliklinik->nm_poli,
             'register' => $register,
             'kamar' =>  $hargaKamar,
             'totalHrgKamar' => $totalBiayaKamar,
 
             'KonsultasiDokterRalan' => $konsultasiDokterRalan,
             'TotalHargaKonsultasiDokterRalan' => $totalBiayaKonsultasiDokterRalan,
-            'KonsulatsiDokterRanap' => $konsultasiDokterRanap,
-            'TotalHargaKonsulatsiDokterRanap' => $totalBiayaKonsultasiDokterRanap,
-            'KonsulatsiDokterPerawatRanap' => $konsultasiDokterPerawatRanap,
-            'TotalHargaKonsulatsiDokterPerawatRanap' => $totalBiayaKonsultasikonsultasiDokterPerawatRanap,
+            'KonsultasiDokterRanap' => $konsultasiDokterRanap,
+            'TotalHargaKonsultasiDokterRanap' => $totalBiayaKonsultasiDokterRanap,
+            'KonsultasiDokterPerawatRanap' => $konsultasiDokterPerawatRanap,
+            'TotalHargaKonsultasiDokterPerawatRanap' => $totalBiayaKonsultasikonsultasiDokterPerawatRanap,
             'TotalBiayaKonsultasi' => $totalBiayaKonsultasi,
-
-            'KunjunganDokterRanap' => $kunjunganDokter,
-            'TotalBiayaDokterRanap' => $totalBiayaVisiteDokter,
-            'KunjunganDokterPerawatRanap' => $kunjunganDokterPerawat,
-            'TotalBiayaDokterPerawatRanap' =>  $totalBiayaVisiteDokterPerawat,
-            'TotalBiayaVisiteRanap' => $totalBiayaVisteRanap,
 
             'KunjunganDokterSpesialisRalan' => $visiteDrSpesialisRalan,
             'TotalBiayaDokterSpesialisRalan' => $totalBiayaVisiteDokterSpesialisRalan,
@@ -453,7 +472,13 @@ class LaporanBillingController extends Controller
             'KunjunganDokterPerawatUmumRalan' => $kunjunganDokterPerawatUmumRalan,
             'totalBiayaVisiteDokterPerawatUmumRalan' => $totalBiayaVisiteDokterPerawatUmumRalan,
             'TotalBiayaVisiteUmumRalan' => $totalBiayaVisiteUmumRalan,
-            'TotalBiayaVisiteUmum' => $totalBiayaViste,
+
+            'KunjunganDokterRanap' => $kunjunganDokter,
+            'TotalBiayaDokterRanap' => $totalBiayaVisiteDokter,
+            'KunjunganDokterPerawatRanap' => $kunjunganDokterPerawat,
+            'TotalBiayaDokterPerawatRanap' =>  $totalBiayaVisiteDokterPerawat,
+            'TotalBiayaVisiteRanap' => $totalBiayaVisteRanap,
+            'TotalBiayaVisite' => $totalBiayaViste,
 
             //pemeriksaan
             'PemeriksaanDokterRalan' => $pemeriksaanDokterRalan,
@@ -509,32 +534,38 @@ class LaporanBillingController extends Controller
             'totalperawatanRanap' => $totalBiayaperawatanRanap,
             'totalperawatan' => $totalBiayaperawatan,
 
+            //lab
             'Lab' => $labData,
             'TotalLabRalan' => $totalLabRalan,
             'TotalLabRanap' => $totalLabRanap,
             'TotalLab' => $totalLab,
 
+            //detail Lab
             'DetailLab' => $detailLab,
             'TotalDetailLabRalan' => $totalDetailLabRalan,
             'TotalDetailLabRanap' => $totalDetailLabRanap,
             'TotalDetailLab' => $totalDetailLab,
             'TotalSemuaLab' =>  $totalSemuaLab,
 
+            // Radio
             'Radiologi' => $radiologi,
             'TotalRadiologiRalan' => $totalradiologiRalan,
             'TotalRadiologiRanap' => $totalradiologiRanap,
             'TotalRadiologi' => $totalradiologi,
 
+            //Operasi
             'Operasi' => $operasiStatus,
             'TotalOperasiRalan' => $totaloperasiStatusRalan,
             'TotalOperasiRanap' => $totaloperasiStatusRanap,
             'TotalOperasi' => $totaloperasiStatus,
 
+            //Obat
             'Obat' => $obat,
             'TotalobatRalan' => $totalobatRalan,
             'TotalobatRanap' => $totalobatRanap,
             'Totalobat' => $totalobat,
 
+            //Resep Pulang
             'ResepPulang' => $resepPulang,
             'totalresepPulang' => $totalresepPulang,
 
@@ -543,7 +574,7 @@ class LaporanBillingController extends Controller
             'totalSemua' => $totalSemua,
         ];
 
-        // return response()->json([ $data_pasien ]);
+        // return response()->json([$data_pasien]);
 
         return view('laporanBilling', compact('no_rawat', 'data_pasien'));
     }
@@ -614,8 +645,13 @@ class LaporanBillingController extends Controller
 
     private function formatBangsalKamar($kamarTerakhir)
     {
+        if (!is_array($kamarTerakhir) || !isset($kamarTerakhir['bed'], $kamarTerakhir['bangsal'])) {
+            return 'Data kamar tidak tersedia';
+        }
+
         return $kamarTerakhir['bed'] . ', ' . $kamarTerakhir['bangsal'];
     }
+
 
     private function calculateLamaMenginap($kamar_data)
     {
@@ -679,7 +715,7 @@ class LaporanBillingController extends Controller
                 ];
             })
             ->values();
-    
+
         // Jika tidak ada data, kembalikan nilai default
         return $data->isEmpty() ? collect([[
             'kode' => '-',
@@ -690,7 +726,7 @@ class LaporanBillingController extends Controller
             'jumlah' => 0,
             'totalBiaya' => 0
         ]]) : $data;
-    }    
+    }
 
     private function getDokterPerawatRalan($pasien, $kategori)
     {
@@ -723,7 +759,7 @@ class LaporanBillingController extends Controller
                 ];
             })
             ->values();
-    
+
         // Jika tidak ada data, kembalikan nilai default
         return $data->isEmpty() ? collect([[
             'kode' => '-',
@@ -767,7 +803,7 @@ class LaporanBillingController extends Controller
                 ];
             })
             ->values();
-    
+
         // Jika tidak ada data, kembalikan nilai default
         return $data->isEmpty() ? collect([[
             'kode' => '-',
@@ -779,7 +815,7 @@ class LaporanBillingController extends Controller
             'totalBiaya' => 0
         ]]) : $data;
     }
-    
+
 
     private function getDokterPerawatRanap($pasien, $kategori)
     {
@@ -812,7 +848,7 @@ class LaporanBillingController extends Controller
                 ];
             })
             ->values();
-    
+
         // Jika tidak ada data, kembalikan nilai default
         return $data->isEmpty() ? collect([[
             'kode' => '-',
@@ -856,7 +892,7 @@ class LaporanBillingController extends Controller
                 ];
             })
             ->values();
-    
+
         // Jika tidak ada data, kembalikan nilai default
         return $data->isEmpty() ? collect([[
             'kode' => '-',
@@ -868,7 +904,7 @@ class LaporanBillingController extends Controller
             'totalBiaya' => 0
         ]]) : $data;
     }
-    
+
     private function getPerawatRalan($pasien, $kategori)
     {
         $data = $pasien->rawatJlPr
@@ -900,7 +936,7 @@ class LaporanBillingController extends Controller
                 ];
             })
             ->values();
-    
+
         // Jika tidak ada data, kembalikan nilai default
         return $data->isEmpty() ? collect([[
             'kode' => '-',
