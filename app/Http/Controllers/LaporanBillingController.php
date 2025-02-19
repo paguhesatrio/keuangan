@@ -609,10 +609,7 @@ class LaporanBillingController extends Controller
 
     private function responseNotFound()
     {
-        return response()->json([
-            'success' => false,
-            'message' => 'Data pasien tidak ditemukan',
-        ]);
+        abort(404, 'Data pasien tidak ditemukan');
     }
 
     private function getDokterDpjp($pasien)

@@ -96,7 +96,7 @@ class RegPeriksa extends Model
 
     public function rawatJlDr()
     {
-        return $this->hasMany(rawatJlDr::class, 'no_rawat', 'no_rawat');
+        return $this->hasMany(RawatJlDr::class, 'no_rawat', 'no_rawat');
     }
 
     public function rawatJlDrPr()
