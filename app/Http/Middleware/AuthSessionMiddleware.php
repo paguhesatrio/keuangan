@@ -11,7 +11,7 @@ class AuthSessionMiddleware
     public function handle(Request $request, Closure $next)
     {
         if (!session()->has('authenticated_user')) {
-            return redirect('/admin')->with('loginError', 'Silakan login terlebih dahulu.');
+            return redirect('/')->with('loginError', 'Silakan login terlebih dahulu.');
         }
 
         // Jika pengguna bukan admin dan mencoba mengakses halaman admin, redirect ke /home
