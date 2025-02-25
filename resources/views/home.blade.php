@@ -18,12 +18,25 @@
             color: #333;
         }
 
+        .table-container {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            /* Smooth scrolling untuk iOS */
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            padding: 10px;
+            max-width: 100%;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
             background-color: #fff;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            min-width: 1000px;
+            /* Pastikan tabel bisa di-scroll */
         }
 
         th,
@@ -31,6 +44,8 @@
             border: 1px solid #ddd;
             padding: 10px;
             text-align: left;
+            white-space: nowrap;
+            /* Hindari teks terpotong */
         }
 
         th {
@@ -86,6 +101,30 @@
             margin: 5px 0;
             border: 0;
             border-top: 1px solid #ddd;
+        }
+
+        /* Responsive Styling */
+        @media screen and (max-width: 768px) {
+            .table-container {
+                padding: 5px;
+            }
+
+            table {
+                min-width: 800px;
+                /* Memastikan tabel masih bisa di-scroll */
+            }
+
+            form {
+                display: flex;
+                flex-direction: column;
+            }
+
+            select,
+            input[type="date"],
+            button {
+                width: 100%;
+                margin-bottom: 10px;
+            }
         }
 
         @media print {
@@ -148,6 +187,7 @@
             <button type="button">Import Excel</button>
         </a>
     </form>
+
     @if (empty($data_pasien))
         <p>Data tidak ditemukan.</p>
     @else
@@ -236,6 +276,7 @@
                                     @endforeach
                                 </table>
                             </td>
+
                             <td>
                                 <table>
                                     <tr>
@@ -243,61 +284,65 @@
                                         <th>Dokter Perujuk</th>
                                         <th>Jumlah</th>
                                     </tr>
-                                    <tr>
-                                        @foreach ($pasien['lab'] as $index => $labs)
-                                    <tr>
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{ $labs['Dokter perujuk'] }} </td>
-                                        <td>{{ $labs['Jumlah rujukan'] }} kali </td>
-                                    </tr>
-                    @endforeach
-                    </tr>
-            </table>
-            </td>
-            <td>
-                <table>
-                    <tr>
-                        <th>No</th>
-                        <th>Dokter Perujuk</th>
-                        <th>Jumlah</th>
-                    </tr>
-                    <tr>
-                        @foreach ($pasien['radiologi'] as $index => $radiologis)
-                    <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $radiologis['Dokter perujuk'] }} </td>
-                        <td>{{ $radiologis['Jumlah rujukan'] }} kali </td>
-                    </tr>
-    @endforeach
-    </tr>
-    </table>
-    </td>
-    <td>{{ $pasien['hd'] }}</td>
-    <td>{{ $pasien['endoskopi'] }}</td>
-    <td>{{ $pasien['ekokardiografi'] }}</td>
-    <td>{{ $pasien['venti in icu'] }}</td>
+                                    @foreach ($pasien['lab'] as $index => $labs)
+                                        <tr>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ $labs['Dokter perujuk'] }} </td>
+                                            <td>{{ $labs['Jumlah rujukan'] }} kali </td>
+                                        </tr>
+                                    @endforeach
+                                </table>
+                            </td>
 
-    <td>
-        <table>
-            <tr>
-                <th>No</th>
-                <th>Dokter Perujuk</th>
-            </tr>
-            <tr>
-            <tr>
-                <td>{{ $pasien['intubasi in icu']['status'] }} </td>
-                @foreach ($pasien['intubasi in icu']['dokter'] as $dokter)
-                    <td> {{ $dokter['nama_dokter'] }}</td>
-                @endforeach
-            </tr>
-            </tr>
-        </table>
-    </td>
-    </tr>
-    @endforeach
-    </tbody>
-    </table>
-    </div>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Dokter Perujuk</th>
+                                        <th>Jumlah</th>
+                                    </tr>
+                                    @foreach ($pasien['radiologi'] as $index => $radiologis)
+                                        <tr>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ $radiologis['Dokter perujuk'] }} </td>
+                                            <td>{{ $radiologis['Jumlah rujukan'] }} kali </td>
+                                        </tr>
+                                    @endforeach
+                                </table>
+                            </td>
+
+                            <td>{{ $pasien['hd'] }}</td>
+                            <td>{{ $pasien['endoskopi'] }}</td>
+                            <td>{{ $pasien['ekokardiografi'] }}</td>
+                            <td>{{ $pasien['venti in icu'] }}</td>
+
+                            <td>
+                                <table>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Dokter Perujuk</th>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ $pasien['intubasi in icu']['status'] }}</td>
+                                        <td>
+                                            <table>
+                                                @foreach ($pasien['intubasi in icu']['dokter'] as $index => $dokter)
+                                                    <tr>
+                                                        <td>{{ $index + 1 }}</td>
+                                                        <td>{{ $dokter['nama_dokter'] }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     @endif
 
 </body>

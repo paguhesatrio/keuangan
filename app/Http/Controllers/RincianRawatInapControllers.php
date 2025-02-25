@@ -53,7 +53,7 @@ class RincianRawatInapControllers extends Controller
 
         // Memeriksa apakah ada pasien yang ditemukan
         if ($pasienList->isEmpty()) {
-            return view('rincianrawatinap', [
+            return view('home', [
                 'data_pasien' => [],
                 'bangsalList' => $bangsalList,
                 'tgl_keluar_start' => $tgl_keluar_start,
@@ -355,7 +355,7 @@ class RincianRawatInapControllers extends Controller
         }
 
         session(['data_pasien' => $data_pasien]);
-        return view('rincianrawatinap', compact('tgl_keluar_start', 'tgl_keluar_end', 'kode_bangsal', 'bangsalList', 'data_pasien'));
+        return view('home', compact('tgl_keluar_start', 'tgl_keluar_end', 'kode_bangsal', 'bangsalList', 'data_pasien'));
     }
 
     public function RincianRawatInapAdmin(Request $request)

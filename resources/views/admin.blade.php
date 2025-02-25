@@ -6,109 +6,156 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f9f9f9;
-        }
+    <!DOCTYPE html>
+    <html lang="id">
 
-        h2 {
-            text-align: center;
-            color: #333;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            background-color: #fff;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
-
-        form {
-            margin-bottom: 20px;
-            background-color: #fff;
-            padding: 15px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        label {
-            margin-right: 10px;
-            font-weight: bold;
-        }
-
-        select,
-        input[type="date"],
-        button {
-            padding: 10px;
-            margin-right: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        button {
-            background-color: #4CAF50;
-            color: white;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        button.danger {
-            background-color: #f44336;
-            color: white;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        button.danger:hover {
-            background-color: #d32f2f;
-        }
-
-        hr {
-            margin: 5px 0;
-            border: 0;
-            border-top: 1px solid #ddd;
-        }
-
-        @media print {
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Rincian Rawat Inap</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <style>
             body {
-                margin: 0;
-                padding: 0;
+                font-family: Arial, sans-serif;
+                margin: 20px;
+                background-color: #f9f9f9;
+            }
+
+            h2 {
+                text-align: center;
+                color: #333;
             }
 
             .table-container {
-                overflow: visible;
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                /* Smooth scrolling untuk iOS */
+                border-radius: 5px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                background-color: #fff;
+                padding: 10px;
+                max-width: 100%;
             }
 
             table {
-                page-break-inside: auto;
+                width: 100%;
+                border-collapse: collapse;
+                background-color: #fff;
+                min-width: 1000px;
+                /* Pastikan tabel bisa di-scroll */
             }
 
-            tr {
-                page-break-inside: avoid;
-                page-break-after: auto;
+            th,
+            td {
+                border: 1px solid #ddd;
+                padding: 10px;
+                text-align: left;
+                white-space: nowrap;
+                /* Hindari teks terpotong */
             }
-        }
-    </style>
-</head>
+
+            th {
+                background-color: #f2f2f2;
+                font-weight: bold;
+            }
+
+            form {
+                margin-bottom: 20px;
+                background-color: #fff;
+                padding: 15px;
+                border-radius: 5px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+
+            label {
+                margin-right: 10px;
+                font-weight: bold;
+            }
+
+            select,
+            input[type="date"],
+            button {
+                padding: 10px;
+                margin-right: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
+
+            button {
+                background-color: #4CAF50;
+                color: white;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+            button:hover {
+                background-color: #45a049;
+            }
+
+            button.danger {
+                background-color: #f44336;
+                color: white;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+            button.danger:hover {
+                background-color: #d32f2f;
+            }
+
+            hr {
+                margin: 5px 0;
+                border: 0;
+                border-top: 1px solid #ddd;
+            }
+
+            /* Responsive Styling */
+            @media screen and (max-width: 768px) {
+                .table-container {
+                    padding: 5px;
+                }
+
+                table {
+                    min-width: 800px;
+                    /* Memastikan tabel masih bisa di-scroll */
+                }
+
+                form {
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                select,
+                input[type="date"],
+                button {
+                    width: 100%;
+                    margin-bottom: 10px;
+                }
+            }
+
+            @media print {
+                body {
+                    margin: 0;
+                    padding: 0;
+                }
+
+                .table-container {
+                    overflow: visible;
+                }
+
+                table {
+                    page-break-inside: auto;
+                }
+
+                tr {
+                    page-break-inside: avoid;
+                    page-break-after: auto;
+                }
+            }
+        </style>
+    </head>
 
 <body>
 
@@ -147,6 +194,7 @@
         </a>
     </form>
 
+    
     @if (empty($data_pasien))
         <p>Data tidak ditemukan.</p>
     @else
@@ -235,6 +283,7 @@
                                     @endforeach
                                 </table>
                             </td>
+
                             <td>
                                 <table>
                                     <tr>
@@ -242,61 +291,65 @@
                                         <th>Dokter Perujuk</th>
                                         <th>Jumlah</th>
                                     </tr>
-                                    <tr>
-                                        @foreach ($pasien['lab'] as $index => $labs)
-                                    <tr>
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{ $labs['Dokter perujuk'] }} </td>
-                                        <td>{{ $labs['Jumlah rujukan'] }} kali </td>
-                                    </tr>
-                    @endforeach
-                    </tr>
-            </table>
-            </td>
-            <td>
-                <table>
-                    <tr>
-                        <th>No</th>
-                        <th>Dokter Perujuk</th>
-                        <th>Jumlah</th>
-                    </tr>
-                    <tr>
-                        @foreach ($pasien['radiologi'] as $index => $radiologis)
-                    <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $radiologis['Dokter perujuk'] }} </td>
-                        <td>{{ $radiologis['Jumlah rujukan'] }} kali </td>
-                    </tr>
-    @endforeach
-    </tr>
-    </table>
-    </td>
-    <td>{{ $pasien['hd'] }}</td>
-    <td>{{ $pasien['endoskopi'] }}</td>
-    <td>{{ $pasien['ekokardiografi'] }}</td>
-    <td>{{ $pasien['venti in icu'] }}</td>
+                                    @foreach ($pasien['lab'] as $index => $labs)
+                                        <tr>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ $labs['Dokter perujuk'] }} </td>
+                                            <td>{{ $labs['Jumlah rujukan'] }} kali </td>
+                                        </tr>
+                                    @endforeach
+                                </table>
+                            </td>
 
-    <td>
-        <table>
-            <tr>
-                <th>No</th>
-                <th>Dokter Perujuk</th>
-            </tr>
-            <tr>
-            <tr>
-                <td>{{ $pasien['intubasi in icu']['status'] }} </td>
-                @foreach ($pasien['intubasi in icu']['dokter'] as $dokter)
-                    <td> {{ $dokter['nama_dokter'] }}</td>
-                @endforeach
-            </tr>
-            </tr>
-        </table>
-    </td>
-    </tr>
-    @endforeach
-    </tbody>
-    </table>
-    </div>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Dokter Perujuk</th>
+                                        <th>Jumlah</th>
+                                    </tr>
+                                    @foreach ($pasien['radiologi'] as $index => $radiologis)
+                                        <tr>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ $radiologis['Dokter perujuk'] }} </td>
+                                            <td>{{ $radiologis['Jumlah rujukan'] }} kali </td>
+                                        </tr>
+                                    @endforeach
+                                </table>
+                            </td>
+
+                            <td>{{ $pasien['hd'] }}</td>
+                            <td>{{ $pasien['endoskopi'] }}</td>
+                            <td>{{ $pasien['ekokardiografi'] }}</td>
+                            <td>{{ $pasien['venti in icu'] }}</td>
+
+                            <td>
+                                <table>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Dokter Perujuk</th>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ $pasien['intubasi in icu']['status'] }}</td>
+                                        <td>
+                                            <table>
+                                                @foreach ($pasien['intubasi in icu']['dokter'] as $index => $dokter)
+                                                    <tr>
+                                                        <td>{{ $index + 1 }}</td>
+                                                        <td>{{ $dokter['nama_dokter'] }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     @endif
 
 </body>

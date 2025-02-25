@@ -24,10 +24,6 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 // Lindungi route /home dengan middleware
 Route::middleware(['auth.session'])->group(function () {
     Route::get('/home', [RincianRawatInapControllers::class, 'RincianRawatInap'])->name('rincian.rawat.inap');
-});
-
-// Lindungi route /home dengan middleware
-Route::middleware(['auth.session'])->group(function () {
     Route::get('/admin', [RincianRawatInapControllers::class, 'RincianRawatInapAdmin'])->name('rincian.rawat.inap.admin');
 });
 
